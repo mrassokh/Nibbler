@@ -34,15 +34,16 @@ void 		ObstacleDirector::setObstacleBuilder(ObstacleBuilder *obstacleBuilder)
 	m_obstacleBuilder = obstacleBuilder;
 }
 
-void 		ObstacleDirector::constructObstacle(GameField *gamefield)
+int			ObstacleDirector::constructObstacle(GameField *gamefield)
 {
 	if (!m_obstacleBuilder->checkObstacleToGameField(gamefield))
-		return ;
+		return (0);
 	m_obstacleBuilder->createNewObstacle();
 	m_obstacleBuilder->setFirstX();
 	m_obstacleBuilder->setFirstY();
 	m_obstacleBuilder->setSize();
 	m_obstacleBuilder->setObstacleSegments();
+	return (1);
 }
 
 Obstacle 	ObstacleDirector::getObstacle()

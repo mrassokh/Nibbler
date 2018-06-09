@@ -22,11 +22,9 @@ public:
 	virtual ~SdlWindow();
 	virtual EVENTS 					getEvent(void);
 	virtual void 					drawSquare(int x, int y, eType type);
-	virtual void 					draw(int const & grid_x, int const & grid_y);
 	virtual void 					startCycl(void);
 	virtual void 					endCycl(void);
 	virtual void 					init(void);
-	virtual void 					cycle(void);
 	virtual void 					quit(void);
 
 	EVENTS 							handleKeyDown(int key) const;

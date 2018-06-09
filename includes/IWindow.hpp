@@ -14,6 +14,7 @@
 # define WINDOW_HPP
 # include <iostream>
 # include "Snake.hpp"
+
 enum EVENTS
 {
 	LEFT_FIRST,
@@ -34,10 +35,8 @@ public:
 	virtual EVENTS 			getEvent(void)  = 0;
 	virtual void 			drawSquare(int x, int y, eType type) = 0;
 	virtual void 			startCycl() = 0;
-	virtual void 			draw(int const & grid_x, int const & grid_y) = 0;
 	virtual void 			init(void) = 0;
 	virtual void 			endCycl(void) = 0;
-	virtual void 			cycle(void) = 0;
 	virtual void 			quit(void) = 0;
 };
 

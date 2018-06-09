@@ -23,11 +23,9 @@ public:
 	virtual ~NcursWindow();
 	virtual EVENTS 					getEvent(void);
 	virtual void 					drawSquare(int x, int y, eType type);
-	virtual void 					draw(int const & grid_x, int const & grid_y);
 	virtual void 					startCycl(void);
 	virtual void 					endCycl(void);
 	virtual void 					init(void);
-	virtual void 					cycle(void);
 	virtual void 					quit(void);
 
 	EVENTS 							handleKeyDown(int key) const;
@@ -36,12 +34,7 @@ private:
 
 	int 					m_width;
 	int 					m_height;
-	// SDL_Event 				m_event;
-	// SDL_Window 				*m_window;
-	// SDL_Renderer 			*m_renderer;
 	bool 					m_quit;
-
-
 };
 
 extern "C" {

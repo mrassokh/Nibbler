@@ -21,7 +21,7 @@ public:
 	static ObstacleDirector &Instance();
 
 	void 					setObstacleBuilder(ObstacleBuilder *obstacleBuilder);
-    void 					constructObstacle(GameField *gamefield);
+    int 					constructObstacle(GameField *gamefield);
     Obstacle 				getObstacle();
 private:
 	ObstacleDirector();
@@ -29,7 +29,7 @@ private:
 	ObstacleDirector& operator = (ObstacleDirector const & rhs) = delete;
 	virtual ~ObstacleDirector();
 
-	ObstacleBuilder  *m_obstacleBuilder;
+	ObstacleBuilder  	*m_obstacleBuilder;
 };
 
 #endif

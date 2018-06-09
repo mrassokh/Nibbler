@@ -26,6 +26,7 @@
 #include "Render.hpp"
 #include <array>
 #include <vector>
+#include "Obstacle.hpp"
 #include <cstring>
 class Nibbler
 {
@@ -65,6 +66,9 @@ private:
 
 	std::shared_ptr<std::vector
 			<std::shared_ptr<FoodSegment>>> 	m_foodList;
+
+	std::shared_ptr<std::vector
+			<std::shared_ptr<Obstacle>>> 		m_obstacleList;
 
 	GameField									*m_gameField;
 	FoodProcessor								*m_foodProcessor;

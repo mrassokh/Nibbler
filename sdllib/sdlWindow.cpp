@@ -38,45 +38,6 @@ void 					SdlWindow::init(void)
 	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 }
 
-void 					SdlWindow::cycle(void)
-{
-	// SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-	// SDL_RenderClear(m_renderer);
-	// SDL_PollEvent(&m_event);
-	// SDL_RenderPresent(m_renderer);
-	// while (1)
-	// 	;
-	// // TODO rendering code goes here
-    //
-	// // render window
-
-
-	while (!m_quit)
-	{
-		SDL_Delay(10);
-		SDL_PollEvent(&m_event);
-
-
-		switch (m_event.type)
-		{
-			case SDL_QUIT:
-				m_quit = true;
-				break;
-			// TODO input handling code goes here
-		}
-
-		SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-		SDL_RenderClear(m_renderer);
-
-		// TODO rendering code goes here
-
-		// render window
-
-		SDL_RenderPresent(m_renderer);
-	}
-	//quit();
-}
-
 void 					SdlWindow::startCycl()
 {
 
@@ -86,24 +47,6 @@ void 					SdlWindow::startCycl()
 
 void 					SdlWindow::endCycl()
 {
-	SDL_RenderPresent(m_renderer);
-}
-
-void 					SdlWindow::draw(int const & grid_x, int const & grid_y)
-{
-	SDL_Delay(10);
-	SDL_PollEvent(&m_event);
-	SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-	SDL_RenderClear(m_renderer);
-	// auto square = snake->getSnake()->begin();
-	// while (square != snake->getSnake()->end())
-	// {
-    //
-	// 	drawSquare((*square)->getGridX(),(*square)->getGridY());
-	// 	printf("drawSquare with type %d in x = %d, and y = %d", (*square)->getType(),(*square)->getGridX(), (*square)->getGridY());
-	// 	square++;
-	// }
-	drawSquare(grid_x, grid_y, SNAKE_HEAD);
 	SDL_RenderPresent(m_renderer);
 }
 

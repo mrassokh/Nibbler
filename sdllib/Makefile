@@ -39,9 +39,9 @@ LIB_FLAG = -shared -fPIC
 
 SRC_PATH 	= ./
 
-ROOT = sdlWindow.cpp Player.cpp
+ROOT = sdlWindow.cpp
 
-FUNCTIONS = hello.cpp
+FUNCTIONS = 
 
 SRC = $(ROOT) $(FUNCTIONS)
 OBJ = $(SRC:.cpp=.o)

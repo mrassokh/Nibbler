@@ -44,37 +44,6 @@ void 					NcursWindow::init(void)
 
 }
 
-void 					NcursWindow::cycle(void)
-{
-
-
-    //
-	// while (!m_quit)
-	// {
-	// 	SDL_Delay(10);
-	// 	SDL_PollEvent(&m_event);
-    //
-    //
-	// 	switch (m_event.type)
-	// 	{
-	// 		case SDL_QUIT:
-	// 			m_quit = true;
-	// 			break;
-	// 		// TODO input handling code goes here
-	// 	}
-    //
-	// 	SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-	// 	SDL_RenderClear(m_renderer);
-    //
-	// 	// TODO rendering code goes here
-    //
-	// 	// render window
-    //
-	// 	SDL_RenderPresent(m_renderer);
-	// }
-	// //quit();
-}
-
 void 					NcursWindow::startCycl()
 {
 
@@ -87,16 +56,16 @@ void 					NcursWindow::endCycl()
 	//SDL_RenderPresent(m_renderer);
 }
 
-void 					NcursWindow::draw(int const & grid_x, int const & grid_y)
- {
-// 	SDL_Delay(10);
-// 	SDL_PollEvent(&m_event);
-// 	SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-// 	SDL_RenderClear(m_renderer);
-
-	drawSquare(grid_x, grid_y, SNAKE_HEAD);
-	//SDL_RenderPresent(m_renderer);
-}
+// void 					NcursWindow::draw(int const & grid_x, int const & grid_y)
+//  {
+// // 	SDL_Delay(10);
+// // 	SDL_PollEvent(&m_event);
+// // 	SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
+// // 	SDL_RenderClear(m_renderer);
+//
+// 	drawSquare(grid_x, grid_y, SNAKE_HEAD);
+// 	//SDL_RenderPresent(m_renderer);
+// }
 
 void 					NcursWindow::quit(void)
 {

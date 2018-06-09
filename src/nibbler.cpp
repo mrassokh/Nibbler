@@ -48,7 +48,7 @@ Nibbler::Nibbler(int width, int height) : m_loopCondition(1),
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
 
 	m_foodList = std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>>(new std::vector<std::shared_ptr<FoodSegment>>);
-
+//	m_foodList = std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>>(new std::vector<std::shared_ptr<Obstacle>>);
 	m_snakeProcessor->initSnake(m_snake, m_gameField);
 	m_foodProcessor->initFoodList(m_foodList,m_gameField);
 	m_sharedWindowLib = "sdllib.so";
