@@ -1,0 +1,51 @@
+CLANG = clang++
+
+NAME = sfmllib.so
+
+DIR_SFML = ./SFML-2.5.0-macOS-clang/
+
+GL =	-framework opengl \
+		$(DIR_SFML)/lib/libsfml-graphics.2.5.0.dylib \
+		$(DIR_SFML)/lib/libsfml-window.2.5.0.dylib \
+		$(DIR_SFML)/lib/libsfml-system.2.5.0.dylib \
+		-L $(DIR_SFML)/lib -Wl,-rpath,$(DIR_SFML)/lib \
+		#-Wl,-rpath,lib_sfml/sfml/2.5/lib
+
+CFLAGS = -Wall -Werror -Wextra
+
+LIB_FLAG = -shared -fPIC
+
+SFML_FLAGS = -I $(DIR_SFML)/include
+
+HEADER = ../includes/sfmlWindow.hpp
+
+SRC = sfmlWindow.cpp
+
+OBJ = $(SRC:.cpp=.cpp.o)
+
+%.cpp.o: %.cpp
+	@$(CLANG) $(CFLAGS) $(SFML_FLAGS) -c $< -o $@
+
+all: $(NAME)
+
+$(NAME): extract $(OBJ) $(HEADER)
+	@$(CLANG) $(CFLAGS) $(LIB_FLAG) $(SFML_FLAGS) -o $(NAME) $(OBJ) $(GL)
+
+extract:
+	curl -OL https://www.sfml-dev.org/files/SFML-2.5.0-macOS-clang.tar.gz
+	tar -zxvf SFML-2.5.0-macOS-clang.tar.gz
+	rm SFML-2.5.0-macOS-clang.tar.gz
+
+run:
+	$(CLANG) $(CFLAGS) -o run_test $(NAME) $(GL)
+
+clean:
+	@rm -rf $(OBJ)
+	@rm -rf sfml
+
+fclean: clean
+	@rm -rf $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

@@ -42,7 +42,7 @@ Nibbler::Nibbler(int width, int height) : m_loopCondition(1),
 	m_eventFunctions[3] = &Nibbler::handleRightSecondEvent;
 	m_eventFunctions[4] = &Nibbler::handleExitEvent;
 	m_eventFunctions[5] = &Nibbler::handleChangeToSdlEvent;
-	m_eventFunctions[6] = &Nibbler::handleChangeToNcursEvent;
+	m_eventFunctions[6] = &Nibbler::handleChangeToSfmlEvent;
 	m_eventFunctions[7] = &Nibbler::handleChangeToGlutEvent;
 	m_eventFunctions[8] = &Nibbler::handleChangeMultiplayerEvent;
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
@@ -51,7 +51,7 @@ Nibbler::Nibbler(int width, int height) : m_loopCondition(1),
 //	m_foodList = std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>>(new std::vector<std::shared_ptr<Obstacle>>);
 	m_snakeProcessor->initSnake(m_snake, m_gameField);
 	m_foodProcessor->initFoodList(m_foodList,m_gameField);
-	m_sharedWindowLib = "sdllib.so";
+	m_sharedWindowLib = "lib1_sdl.so";
 }
 
 Nibbler			&Nibbler::Instance(int width, int height)
@@ -179,14 +179,14 @@ void 										Nibbler::handleChangeToSdlEvent()
 	m_loopCondition = 0;
 	m_newWindow->quit();
 	printf("handleChangeToSdlEvent!!!\n\n\n");
-	m_sharedWindowLib = "sdllib.so";
+	m_sharedWindowLib = "lib1_sdl.so";
 }
-void 										Nibbler::handleChangeToNcursEvent()
+void 										Nibbler::handleChangeToSfmlEvent()
 {
 	m_loopCondition = 0;
 	m_newWindow->quit();
 	printf("handleChangeToNcursEvent!!!\n\n\n");
-	m_sharedWindowLib = "ncurslib.so";
+	m_sharedWindowLib = "lib2_sfml.so";
 }
 void 										Nibbler::handleChangeToGlutEvent()
 {

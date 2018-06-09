@@ -12,6 +12,7 @@
 
 NAME =	nibbler
 SDLLIB = sdllib.so
+SFMLLIB = sfmllib.so
 NCURSLIB = ncurslib.so
 #[----------------------------------HEADERS-----------------------------------]#
 
@@ -20,8 +21,8 @@ HEADERS_PATH =	./includes/
 INC =-I$(HEADERS_PATH)
 
 #[---------------------------------LIBRARIES----------------------------------]#
-LIB_SDL_PATH = sdllib/
-LIBS_NCURS_PATH = ncurslib/
+LIB_SDL_PATH = lib1_sdl/
+LIBS_SFML_PATH = lib2_sfml/
 LIBS_GLUT_PATH =
 
 
@@ -75,6 +76,8 @@ RED                     =       \033[31m
 #
 .PHONY: make_libs
 .PHONY: make_libsdl_so
+.PHONY: make_libsfml_so
+
 
 vpath %.cpp $(SRC_PATH)
 vpath %.hpp $(HEADERS_PATH)
@@ -96,31 +99,28 @@ $(OBJ): | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-clean:
-	@ rm -f $(OBJ)
-	@ rm -rf $(OBJ_DIR)
-	@ echo "$(YELLOW)[clean]$(RESET)"
-
-fclean: clean
-	@ rm -f $(NAME) $(SDLLIB) $(NCURSLIB)
-	@ cd ./$(LIB_SDL_PATH); make clean;
-	@ echo "$(RED)[fclean]$(RESET)"
-
-re: fclean all
-
-make_libs: make_libsdl_so make_libncurs_so
+make_libs: make_libsdl_so make_libsfml_so
 
 make_libsdl_so:
 	@ cd ./$(LIB_SDL_PATH);\
 	make ;
 	@ echo "$(GREEN)[libsdl_so compile]$(RESET)"
 
-make_libncurs_so:
-	@ cd ./$(LIBS_NCURS_PATH);\
+make_libsfml_so:
+	@ cd ./$(LIBS_SFML_PATH);\
 	make ;
-	@ echo "$(GREEN)[libncurs_so compile]$(RESET)"
+	@ echo "$(GREEN)[libsfml_so compile]$(RESET)"
 
-make_libglut_so:
-	@ cd ./$(LIBS_GLUT_PATH);\
-	make ;
-	@ echo "$(GREEN)[libglut_so compile]$(RESET)"
+
+clean:
+	@ rm -f $(OBJ)
+	@ rm -rf $(OBJ_DIR)
+	@ echo "$(YELLOW)[clean]$(RESET)"
+
+fclean: clean
+	@ rm -f $(NAME) $(SDLLIB) $(SFMLLIB)
+	@ cd ./$(LIB_SDL_PATH); make clean;
+	@ cd ./$(LIB_SFML_PATH); make clean;
+	@ echo "$(RED)[fclean]$(RESET)"
+
+re: fclean all

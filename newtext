@@ -1,0 +1,90 @@
+CXX = g++
+CLANG = clang
+
+NAME = nibbler
+
+PLATFORM := $(shell uname)
+
+CFLAGS = -Wall -Werror -Wextra -o3 -std=c++11
+
+LIB_FLAG = -shared -fPIC
+
+HEAD =	includes/CustomExeptions.hpp \
+		includes/DotObstacleBuilder.hpp \
+		includes/FoodProcessor.hpp \
+		includes/FoodSegment.hpp \
+		includes/GameField.hpp \
+		includes/IEntity.hpp \
+		includes/IWindow.hpp \
+		includes/ncursWindow.hpp \
+		includes/nibbler.hpp \
+		includes/Obstacle.hpp \
+		includes/ObstacleBuilder.hpp \
+		includes/ObstacleDirector.hpp \
+		includes/ObstacleProcessor.hpp \
+		includes/Player.hpp \
+		includes/Render.hpp \
+		includes/sdlWindow.hpp \
+		includes/Snake.hpp \
+		includes/SnakeHead.hpp \
+		includes/SnakeProcessor.hpp \
+		includes/SnakeSegment.hpp \
+		includes/SquareSegment.hpp \
+
+SRC = 	src/nibbler.cpp \
+		src/SquareSegment.cpp \
+		src/GameField.cpp \
+		src/SnakeSegment.cpp \
+		src/SnakeHead.cpp \
+		src/Snake.cpp \
+		src/FoodSegment.cpp \
+		CustomExeptions.cpp \
+		src/FoodProcessor.cpp \
+		src/Render.cpp \
+		src/SnakeProcessor.cpp \
+		src/Obstacle.cpp \
+		src/ObstacleBuilder.cpp \
+		src/DotObstacleBuilder.cpp \
+		src/ObstacleDirector.cpp
+
+OBJ = $(SRC:.cpp=.cpp.o)
+
+%.cpp.o: %.cpp $(HEAD)
+	@$(CXX) $(CFLAGS) $(CFLAGS) -c $< -o $@
+
+all: $(NAME)
+
+$(NAME): sdl2 sfml $(OBJ)
+	@cp lib2_sfml/sfmllib.so .
+	@$(CXX) $(CFLAGS) $(OBJ) -o $(NAME)
+	@echo "\tBuild Bin 'nibbler' SUCCESS"
+	@echo "\n\t./nibbler sdllib.so sfmllib.so"
+	@echo "\n\t./nibbler *.so"
+	@echo "\n\t./nibbler x[width] y[height] lib.so"
+
+
+sdl2:
+	@make -C sdllib
+	@echo "\tBuild Dynamic Lib SDL2 SUCCESS"
+
+sfml:
+	@make -C lib2_sfml
+	@echo "\tBuild Dynamic Lib SFML SUCCESS"
+
+example: src/main.cpp libcircle.so
+	@g++ -o example src/main.cpp -ldl
+
+clean:
+	@make -C sdllib clean
+	@make -C lib2_sfml clean
+	@rm -rf $(OBJ)
+
+fclean: clean
+	@rm *.so
+	@rm -rf $(NAME)
+	@make -C sdllib fclean
+	@make -C lib2_sfml fclean
+
+re: fclean all
+
+.PHONY: all clean fclean re
