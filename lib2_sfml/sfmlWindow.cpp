@@ -38,8 +38,8 @@ void 					SfmlWindow::init(void)
 {
 	sf::ContextSettings settings;
 
-	_x = 5;
-	_y = 5;
+	_x = 50;
+	_y = 50;
 	settings.antialiasingLevel = 8;
 	m_event = new sf::Event();
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
