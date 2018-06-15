@@ -11,9 +11,9 @@
 # **************************************************************************** #
 
 NAME =	nibbler
-SDLLIB = sdllib.so
-SFMLLIB = sfmllib.so
-NCURSLIB = ncurslib.so
+SDLLIB = lib1_sdl.so
+SFMLLIB = lib2_sfml.so
+
 #[----------------------------------HEADERS-----------------------------------]#
 
 HEADERS_PATH =	./includes/
@@ -99,17 +99,17 @@ $(OBJ): | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-make_libs: make_libsdl_so make_libsfml_so
+make_libs: make_lib1_sdl_so make_lib2_sfml_so
 
-make_libsdl_so:
+make_lib1_sdl_so:
 	@ cd ./$(LIB_SDL_PATH);\
 	make ;
-	@ echo "$(GREEN)[libsdl_so compile]$(RESET)"
+	@ echo "$(GREEN)[lib1_sdl_so compile]$(RESET)"
 
-make_libsfml_so:
+make_lib2_sfml_so:
 	@ cd ./$(LIBS_SFML_PATH);\
 	make ;
-	@ echo "$(GREEN)[libsfml_so compile]$(RESET)"
+	@ echo "$(GREEN)[lib2_sfml_so compile]$(RESET)"
 
 
 clean:

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "SnakeSegment.hpp"
+#include "../includes/SnakeSegment.hpp"
 
 SnakeSegment::SnakeSegment() : SquareSegment()
 {

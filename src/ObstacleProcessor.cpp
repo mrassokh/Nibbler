@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ObstacleProcessor.hpp"
+#include "../includes/ObstacleProcessor.hpp"
 
 ObstacleProcessor::ObstacleProcessor()
 {

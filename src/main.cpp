@@ -1,8 +1,8 @@
 // #include <dlfcn.h>
 // #include <iostream>
 // #include "IEntity.hpp"
-#include "nibbler.hpp"
-#include "CustomExeptions.hpp"
+#include "../includes/nibbler.hpp"
+#include "../includes/CustomExeptions.hpp"
 
 
 

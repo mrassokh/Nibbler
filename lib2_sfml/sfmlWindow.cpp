@@ -131,3 +131,12 @@ void 			SfmlWindow::drawSquare(int x, int y, eType type)
 	m_window->draw(rectangle);
 }
 
+SfmlWindow		*createWindow(int width, int height)
+{
+	return new SfmlWindow(width, height);
+}
+
+void 		deleteWindow(SfmlWindow *sfmlWindow)
+{
+	delete sfmlWindow;
+}

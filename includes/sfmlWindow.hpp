@@ -6,9 +6,8 @@
 #define NIBLER_SFMLWINDOW_HPP
 
 # include "IWindow.hpp"
-# include <SFML/Graphics.hpp>
-//# include "../lib2_sfml/SFML-2.5.0-macOS-clang/Frameworks/SFML.framework/Headers/Graphics.hpp"
-//# include "../lib2_sfml/SFML-2.5.0-macOS-clang/Frameworks/SFML.framework/Headers/Window.hpp"
+# include "SFML/Graphics.hpp"
+# include "SFML/Window.hpp"
 
 # define SQUARE_SIZE 40
 class SfmlWindow : public IWindow
@@ -34,9 +33,13 @@ private:
 	int 					_y;
 	sf::RenderWindow		*m_window;
 	sf::Event 				*m_event;
-//	SDL_Renderer 			*m_renderer;
 	bool 					m_quit;
 
 
 };
+
+extern "C" {
+	SfmlWindow		*createWindow(int width, int height);
+	void 			deleteWindow(SfmlWindow *sfmlWindow);
+}
 #endif

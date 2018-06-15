@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 
-#include "nibbler.hpp"
+//#include "nibbler.hpp"
+#include "../includes/nibbler.hpp"
 
 Nibbler::Nibbler()
 {
@@ -70,12 +71,16 @@ void  			Nibbler::processing()
 {
 	while (strcmp(m_sharedWindowLib, "exit") != 0){
 		dl_handle = dlopen(m_sharedWindowLib, RTLD_LAZY | RTLD_LOCAL);
-		if (!dl_handle)
+		if (!dl_handle) {
 			dlerror_wrapper();
-			printf("m_sharedWindowLib %s!!!\n\n\n", m_sharedWindowLib);
+			std::cout << "first" << std::endl;
+		}
+		printf("m_sharedWindowLib %s!!!\n\n\n", m_sharedWindowLib);
 		m_windowCreator = reinterpret_cast<IWindow *(*)(int width, int height)>(dlsym(dl_handle, "createWindow"));
-		if (!m_windowCreator)
+		if (!m_windowCreator) {
+			std::cout << "second" << std::endl;
 			dlerror_wrapper();
+		}
 		m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
 		m_newWindow->init();
 		m_loopCondition = 1;
@@ -105,7 +110,7 @@ void 			Nibbler::gameLoop()
 			m_sharedWindowLib = "exit";
 		}
 		draw();
-		printf("score is %d\n", m_snake.getScore());
+//		printf("score is %d\n", m_snake.getScore());
 		m_deltaTime = static_cast<double>((clock() - start ))/ CLOCKS_PER_SEC;
 		m_time += m_deltaTime;
 		if (velocity_incr > 1) {
@@ -185,7 +190,7 @@ void 										Nibbler::handleChangeToSfmlEvent()
 {
 	m_loopCondition = 0;
 	m_newWindow->quit();
-	printf("handleChangeToNcursEvent!!!\n\n\n");
+	printf("handleChangeToSfmlEvent!!!\n\n\n");
 	m_sharedWindowLib = "lib2_sfml.so";
 }
 void 										Nibbler::handleChangeToGlutEvent()

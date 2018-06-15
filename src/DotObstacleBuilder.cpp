@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "DotObstacleBuilder.hpp"
+#include "../includes/DotObstacleBuilder.hpp"
 
 DotObstacleBuilder::DotObstacleBuilder()
 {

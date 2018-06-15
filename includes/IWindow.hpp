@@ -40,4 +40,5 @@ public:
 	virtual void 			quit(void) = 0;
 };
 
+
 # endif

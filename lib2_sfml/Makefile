@@ -1,55 +1,54 @@
-CLANG = clang++
+SFMLDIR=SFML2.2
 
-NAME = lib2_sfml.so
+include_dir=/usr/X11R6/include $(SFMLDIR)/SFML-2.2-osx-clang-universal/include
+library_dir=/usr/X11R6/lib
+cairo=cairo
+x11=X11
+sfml=SFML sfml-graphics sfml-window sfml-system OpenGL
+src_dir=
+obj_dir=
 
+SFMLFRAMDIR=$(SFMLDIR)/SFML-2.2-osx-clang-universal/Frameworks
+PWD=$(shell pwd)
+CXX=clang++
+FRAMSFML=-F $(SFMLFRAMDIR) $(addprefix -framework , $(sfml))
+LIBRARY= $(LIBCAIRO) $(LIBX11)
+INCLUDE=$(addprefix -I, $(include_dir))
+LIB=$(addprefix -L, $(library_dir)) $(LIBRARY)
+
+NAME=lib2_sfml.so
 NAMEGOAL = ../
+CPPFLAGS = -g3 -Wall -Wextra -Werror -std=c++11 $(INCLUDE)
+VPATH=$(include_dir) $(library_dir) $(src_dir)
+vpath %.dylib $(library_dir)
 
-NAME_DIRECTORY = SFML-2.5.0-macOS-clang
+SRC=sfmlWindow.cpp
 
-DIR_SFML = ./$(NAME_DIRECTORY)/
+OBJ=$(SRC:%.cpp=%.o)
 
-GL =	-framework opengl \
-		$(DIR_SFML)/lib/libsfml-graphics.2.5.0.dylib \
-		$(DIR_SFML)/lib/libsfml-window.2.5.0.dylib \
-		$(DIR_SFML)/lib/libsfml-system.2.5.0.dylib \
-		-L $(DIR_SFML)/lib -Wl,-rpath,$(DIR_SFML)/lib \
+.SECONDARY: $(OBJ)
 
+.PHONY: all clean fclean re
 
-CFLAGS = -Wall -Werror -Wextra -std=c++11
+all: $(SFMLDIR) $(NAME)
 
-LIB_FLAG = -shared -fPIC
+$(SFMLDIR):
+	curl -OL http://www.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz
+	mkdir $(SFMLDIR)
+	tar zxvfC SFML-2.2-osx-clang-universal.tar.gz $(SFMLDIR)
+	rm SFML-2.2-osx-clang-universal.tar.gz
+	cd $(SFMLFRAMDIR) && ln -s ../extlibs/freetype.framework
 
-SFML_FLAGS = -I $(DIR_SFML)/include
-
-HEADER = ../includes/sfmlWindow.hpp
-
-SRC = sfmlWindow.cpp
-
-OBJ = $(SRC:.cpp=.cpp.o)
-
-%.cpp.o: %.cpp
-	@$(CLANG) $(CFLAGS) $(SFML_FLAGS) -c $< -o $@
-
-all: $(NAME)
-
-$(NAME): extract $(OBJ) $(HEADER)
-	@echo "\033[0;32mCompile sfmllib ...\033[0m"
-	@ $(CLANG) $(CFLAGS) $(LIB_FLAG) $(SFML_FLAGS) -o $(NAME) $(OBJ) $(GL)
+$(NAME): $(OBJ)
+	$(CXX) $(CPPFLAGS) -o $@ $(OBJ) $(LIB) $(FRAMSFML) -rpath $(PWD)/$(SFMLFRAMDIR) -dynamiclib
 	rm -f $(OBJ)
 	mv $(NAME) $(NAMEGOAL)
 
-extract:
-	curl -OL https://www.sfml-dev.org/files/SFML-2.5.0-macOS-clang.tar.gz
-	tar -zxvf SFML-2.5.0-macOS-clang.tar.gz
-	rm SFML-2.5.0-macOS-clang.tar.gz
-
 
 clean:
-	@ rm -rf $(OBJ)
-	@ rm -rf $(NAME_DIRECTORY)
-	@ echo "$(RED)[clean]$(RESET)"
+	rm -rf $(OBJ)
 
 fclean: clean
-	@ echo "$(RED)[fclean]$(RESET)"
+	rm -rf $(NAME)  ./**/#*# ./**/.DS_Store ./**/.#*
 
 re: fclean all

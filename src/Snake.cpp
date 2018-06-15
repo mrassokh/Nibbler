@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Snake.hpp"
+#include "../includes/Snake.hpp"
 
 Snake::Snake() : m_eating(0), m_score(0)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
- # include "SquareSegment.hpp"
+ # include "../includes/SquareSegment.hpp"
 
  SquareSegment::SquareSegment()
  {
