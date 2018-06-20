@@ -11,14 +11,11 @@
 /* ************************************************************************** */
 
 #include "../includes/sfmlWindow.hpp"
-//#include "SFML-2.5.0-macOS-clang/include/SFML/Graphics/Rect.hpp"
-//#include "SFML-2.5.0-macOS-clang/Frameworks/SFML.framework/Headers/Window/Keyboard.hpp"
+#include "SFML2.2/SFML-2.2-osx-clang-universal/Frameworks/SFML.framework/Versions/Current/Headers/System/Vector2.hpp"
 //https://github.com/noxsnono/Nibbler/blob/master/lib_sfml/lib_sfml.class.cpp
 
 SfmlWindow::SfmlWindow()
-{
-
-}
+{}
 
 SfmlWindow::SfmlWindow(int width, int height)
 {
@@ -36,21 +33,16 @@ SfmlWindow::~SfmlWindow()
 
 void 					SfmlWindow::init(void)
 {
-	sf::ContextSettings settings;
-
-	_x = 50;
-	_y = 50;
-	settings.antialiasingLevel = 8;
 	m_event = new sf::Event();
-	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	sf::Vector2i pos((desktop.width / 2) - ((_x * 10) / 2), (desktop.height / 2) - ((_y * 10) / 2));
+
+	sf::Vector2i pos(0, 0);
 	try {
+		sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 		m_window = new sf::RenderWindow(
-				sf::VideoMode(_y * 10, _x * 10, 32),
-				"Genius",
-				sf::Style::Default,
-				settings);
+				sf::VideoMode(m_width, m_height, desktop.bitsPerPixel),
+				"Genius");
 		m_window->setPosition(pos);
+		m_window->setFramerateLimit(60);
 	}
 	catch (std::exception & e) {
 		std::cerr << "SFML EXCEPTION --] " << e.what() << std::endl;
@@ -59,21 +51,17 @@ void 					SfmlWindow::init(void)
 
 void 					SfmlWindow::startCycl()
 {
-//	SDL_SetRenderDrawColor(m_renderer, 42, 242, 242, 255);
-//	SDL_RenderClear(m_renderer);
+	m_window->clear(sf::Color(42, 242, 242, 255));
 }
 
 void 					SfmlWindow::endCycl()
 {
-//	SDL_RenderPresent(m_renderer);
+	m_window->display();
 }
 
 void 					SfmlWindow::quit(void)
 {
-//	SDL_Delay(1000);
-//	SDL_DestroyRenderer(m_renderer);
-//	SDL_DestroyWindow(m_window);
-//	SDL_Quit();
+	m_window->close();
 }
 
 EVENTS 			SfmlWindow::getEvent(void)
@@ -83,7 +71,6 @@ EVENTS 			SfmlWindow::getEvent(void)
 			return EXIT;
 		else if (m_event->type == sf::Event::KeyPressed)
 		{
-			//printf("SDL_KEYDOWN %d\n", ret);
 			return handleKeyDown();
 		}
 	}
@@ -117,18 +104,26 @@ EVENTS 			SfmlWindow::handleKeyDown() const
 
 void 			SfmlWindow::drawSquare(int x, int y, eType type)
 {
-	sf::Sprite rectangle;
-	rectangle.setTextureRect(sf::IntRect(x *  SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE));
+	sf::ConvexShape rect;
+
+	rect.setOutlineThickness(0.5);
+	rect.setPointCount(4);
+	rect.setPoint(0, sf::Vector2f(0, 0));
+	rect.setPoint(1, sf::Vector2f(SQUARE_SIZE, 0));
+	rect.setPoint(2, sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));
+	rect.setPoint(3, sf::Vector2f(0, SQUARE_SIZE));
+	rect.setPosition(sf::Vector2f(x *  SQUARE_SIZE, y *  SQUARE_SIZE));
+	rect.setOutlineColor(sf::Color(150, 150, 150));
 	if (type == FOOD){
-		rectangle.setColor(sf::Color(242, 0, 242, 255));
+		rect.setFillColor(sf::Color(242, 0, 242, 255));
 	} else if (type == SNAKE_HEAD) {
-		rectangle.setColor(sf::Color(242, 0, 42, 255));
+		rect.setFillColor(sf::Color(242, 0, 42, 255));
 	} else if (type == OBSTACLE) {
-		rectangle.setColor(sf::Color(0, 0, 142, 255));
+		rect.setFillColor(sf::Color(0, 0, 142, 255));
 	}  else  {
-		rectangle.setColor(sf::Color(242, 242, 242, 255));
+		rect.setFillColor(sf::Color(242, 242, 242, 255));
 	}
-	m_window->draw(rectangle);
+	m_window->draw(rect);
 }
 
 SfmlWindow		*createWindow(int width, int height)
@@ -136,7 +131,7 @@ SfmlWindow		*createWindow(int width, int height)
 	return new SfmlWindow(width, height);
 }
 
-void 		deleteWindow(SfmlWindow *sfmlWindow)
+void			deleteWindow(SfmlWindow *sfmlWindow)
 {
 	delete sfmlWindow;
 }

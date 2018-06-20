@@ -29,8 +29,6 @@ private:
 
 	int 					m_width;
 	int 					m_height;
-	int 					_x;
-	int 					_y;
 	sf::RenderWindow		*m_window;
 	sf::Event 				*m_event;
 	bool 					m_quit;

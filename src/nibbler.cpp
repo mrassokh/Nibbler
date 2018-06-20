@@ -82,6 +82,7 @@ void  			Nibbler::processing()
 			dlerror_wrapper();
 		}
 		m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
+		std::cout << "width - " << m_gameField->getWidth() << " height - " << m_gameField->getHeight() << std::endl;
 		m_newWindow->init();
 		m_loopCondition = 1;
 		gameLoop();
@@ -103,7 +104,7 @@ void 			Nibbler::gameLoop()
 		eventHandling();
 		try {
 			m_snakeProcessor->updateSnake(m_snake, m_velocity, m_deltaTime);
-			m_foodProcessor->timeUpdateFoodList(m_foodList,m_gameField);
+			m_foodProcessor->timeUpdateFoodList(m_foodList, m_gameField);
 		}
 		catch (std::exception& e)	{
 			std::cerr << e.what() << std::endl;
@@ -124,8 +125,8 @@ void 			Nibbler::gameLoop()
 void 			Nibbler::draw()
 {
 	m_newWindow->startCycl();
-	m_render->drawSnake(m_snake,m_newWindow);
-	m_render->drawFood(m_foodList,m_newWindow);
+	m_render->drawSnake(m_snake, m_newWindow);
+	m_render->drawFood(m_foodList, m_newWindow);
 	m_newWindow->endCycl();
 }
 
