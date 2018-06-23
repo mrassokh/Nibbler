@@ -15,14 +15,18 @@
 ObstacleProcessor::ObstacleProcessor()
 {
 	m_obstacleDirector = &ObstacleDirector::Instance();
-	m_dotObstacleBuilder = std::shared_ptr<DotObstacleBuilder>(new DotObstacleBuilder);
+	m_dotObstacleBuilder = new DotObstacleBuilder();
+	m_zetObstacleBuilder = new ZetObstacleBuilder();
+	m_lObstacleBuilder = new LObstacleBuilder();
+	m_builders[0] = m_dotObstacleBuilder;
+	m_builders[1] = m_zetObstacleBuilder;
+	m_builders[2] = m_lObstacleBuilder;
 }
 
 
 ObstacleProcessor::~ObstacleProcessor()
 {
 
-	delete m_dotObstacleBuilder ;
 }
 
 
@@ -35,9 +39,10 @@ ObstacleProcessor	&ObstacleProcessor::Instance()
 void 				ObstacleProcessor::initObstacleList(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
 									GameField *gameField)
 {
-	int obstacleListSize = gameField->getSize() / 50;
+	int obstacleListSize = gameField->getSize() / 20 ;
 
-	for (int i = 0; i < obstacleListSize; ++i) {
+	for (int i = 0; i < obstacleListSize ; ++i) {
+		m_obstacleDirector->setObstacleBuilder(m_builders[i % 3]);
 		createObstacle(obstacleList, gameField);
 	}
 }
@@ -52,13 +57,11 @@ void 				ObstacleProcessor::createObstacle(std::shared_ptr<std::vector<std::shar
 	int positionX = rand() % gameField->getWidth();
 	int positionY = rand() % gameField->getHeight();
 
-	m_obstacleDirector->setObstacleBuilder(m_dotObstacleBuilder)
-	// while (gameField->getFieldElement(positionX, positionY))
-	// {
-	// 	positionX = rand() % gameField->getWidth();
-	// 	positionY = rand() % gameField->getHeight();
-	// }
-	std::shared_ptr<FoodSegment> newFood = std::shared_ptr<FoodSegment>(new FoodSegment(positionX, positionY));
-	foodList->push_back(newFood);
-	gameField->setFieldElement(newFood->getGridX(), newFood->getGridY(), newFood);
+	while (positionY == (gameField->getHeight() / 2) || positionX == gameField->getWidth() / 2
+			|| !m_obstacleDirector->constructObstacle(gameField, positionX, positionY)){
+		positionX = rand() % gameField->getWidth();
+		positionY = rand() % gameField->getHeight();
+	}
+	std::shared_ptr<Obstacle> newObstacle = std::shared_ptr<Obstacle>(m_obstacleDirector->getObstacle());
+	obstacleList->push_back(newObstacle);
 }

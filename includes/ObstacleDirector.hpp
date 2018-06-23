@@ -21,8 +21,8 @@ public:
 	static ObstacleDirector &Instance();
 
 	void 					setObstacleBuilder(ObstacleBuilder *obstacleBuilder);
-    int 					constructObstacle(GameField *gamefield);
-    Obstacle 				getObstacle();
+    int 					constructObstacle(GameField *gamefield, int const & x, int const & y);
+    Obstacle 				*getObstacle();
 private:
 	ObstacleDirector();
 	ObstacleDirector(ObstacleDirector const & rhs) = delete;

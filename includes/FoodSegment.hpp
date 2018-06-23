@@ -28,12 +28,10 @@ public:
 
 	double 			getBornTime() const;
 	double 			getLiveTime() const;
-//	int				getId()	const;
 
 private:
 	double			m_bornTime;
 	double			m_liveTime;
-	//int				m_id;
 };
 
 

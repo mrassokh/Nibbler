@@ -27,8 +27,7 @@ FoodProcessor::~FoodProcessor()
 {
 
 }
-void 					FoodProcessor::initFoodList(
-									std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
+void 		FoodProcessor::initFoodList(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
 									GameField *gameField)
 {
 	int foodListSize = gameField->getSize() / 20;
@@ -38,8 +37,7 @@ void 					FoodProcessor::initFoodList(
 	}
 }
 
-void 					FoodProcessor::timeUpdateFoodList(
-									std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
+void 		FoodProcessor::timeUpdateFoodList(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
 									GameField *gameField)
 {
 	if (!foodList)
@@ -62,8 +60,7 @@ void 					FoodProcessor::timeUpdateFoodList(
 		createFoodSegment(foodList, gameField);
 }
 
-void 					FoodProcessor::createFoodSegment(
-									std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
+void 		FoodProcessor::createFoodSegment(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
 									GameField *gameField)
 {
 	if (!foodList)

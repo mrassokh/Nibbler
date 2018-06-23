@@ -44,7 +44,7 @@ std::string 		CustomExeption::getError() const
 	return m_Error;
 }
 
-const char* CustomExeption::what() const throw()
+const char* 		CustomExeption::what() const throw()
 {
 	return this->m_Error.c_str();
 }

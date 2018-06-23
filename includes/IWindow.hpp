@@ -15,6 +15,14 @@
 # include <iostream>
 # include "Snake.hpp"
 
+enum STATE
+{
+	START,
+	GAME,
+	GAME_OVER,
+	SCREEN_EXIT
+};
+
 enum EVENTS
 {
 	LEFT_FIRST,
@@ -25,7 +33,7 @@ enum EVENTS
 	CHANGE_TO_SDL_WIN,
 	CHANGE_TO_NCURS_WIN,
 	CHANGE_TO_GLUT_WIN,
-	CHANGE_MULTIPLAYER_MODE,
+	NEW_GAME,
 	DEFAULT
 };
 
@@ -34,10 +42,13 @@ class IWindow
 public:
 	virtual EVENTS 			getEvent(void)  = 0;
 	virtual void 			drawSquare(int x, int y, eType type) = 0;
+	virtual void 			drawScore(int score, int velocity, eType type, int mult) = 0;
+	virtual void 			drawStart() = 0;
+	virtual void 			drawGameOver(std::string const & finishMessage) = 0;
 	virtual void 			startCycl() = 0;
 	virtual void 			init(void) = 0;
 	virtual void 			endCycl(void) = 0;
-	virtual void 			quit(void) = 0;
+	virtual void 			quit(std::string const & finishMessage) = 0;
 };
 
 # endif

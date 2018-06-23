@@ -28,14 +28,13 @@ Render::~Render()
 
 }
 
-
 void 			Render::drawSnake(Snake  & snake, IWindow *window) const
 {
 	auto squareSnake = snake.getSnake()->begin();
 	while (squareSnake != snake.getSnake()->end())
 	{
 		window->drawSquare((*squareSnake)->getGridX(),(*squareSnake)->getGridY(),
-															(*squareSnake)->getType());
+													(*squareSnake)->getType());
 		squareSnake++;
 	}
 }
@@ -47,7 +46,19 @@ void 			Render::drawFood(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment
 	while (squareFood != foodList->end())
 	{
 		window->drawSquare((*squareFood)->getGridX(),(*squareFood)->getGridY(),
-															(*squareFood)->getType());
+													(*squareFood)->getType());
 		squareFood++;
+	}
+}
+
+
+void 			Render::drawObstacles(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
+						IWindow *window) const
+{
+	auto obstacle = obstacleList->begin();
+	while (obstacle != obstacleList->end())
+	{
+		(*obstacle)->drawObstacle(window);
+		obstacle++;
 	}
 }

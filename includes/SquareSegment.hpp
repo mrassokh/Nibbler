@@ -13,21 +13,14 @@
 #ifndef SQUARE_SEGMENT_HPP
 # define SQUARE_SEGMENT_HPP
 
-// typedef struct			s_color
-// {
-// 	unsigned char		red;
-// 	unsigned char		green;
-// 	unsigned char		blue;
-// 	unsigned char		alpha;
-// }						t_color;
-
 enum eType
 {
 	DEF,
 	OBSTACLE,
 	FOOD,
 	SNAKE_SEGMENT,
-	SNAKE_HEAD
+	SNAKE_HEAD,
+	SNAKE_SECOND_HEAD
 };
 
 class SquareSegment

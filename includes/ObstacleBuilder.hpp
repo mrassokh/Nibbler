@@ -25,16 +25,18 @@ public:
 	virtual ~ObstacleBuilder();
 
 	void 				createNewObstacle();
-	Obstacle			getReadyObstacle();
+	Obstacle			*getReadyObstacle();
 	int					getX() const;
 	int					getY() const;
 	Obstacle 			*getObstacle() const;
+	void 				setOneSegment(GameField *gamefield, int const & x, int const & y);
 
-	virtual int 		checkObstacleToGameField(GameField *gamefield) = 0;
-	virtual void 		setFirstX() = 0;
-	virtual void 		setFirstY() = 0;
+	virtual int 		checkObstacleToGameField(GameField *gamefield, int const & x, int const & y) = 0;
+	virtual void 		setFirstX(int const & x) = 0;
+	virtual void 		setFirstY(int const & y) = 0;
 	virtual void 		setSize() = 0;
-	virtual void 		setObstacleSegments() = 0;
+	virtual void 		setObstacleSegments(GameField *gamefield, int const & x, int const & y) = 0;
+
 protected:
 	Obstacle 			*m_obstacle;
 	int 				m_X;

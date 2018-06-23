@@ -18,21 +18,27 @@ SnakeHead::SnakeHead()
 }
 
 SnakeHead::SnakeHead(const int & x, const int & y, const int & prev_x,
-	 					const int & prev_y, const int & dirX, const int & dirY)
+	 					const int & prev_y, const int & dirX, const int & dirY, eType type)
 						: SnakeSegment(x, y, prev_x, prev_y),
 						m_dirX(dirX),
 						m_dirY(dirY),
 						m_delta(0),
-						m_rotateCondition(1)
-
+						m_leftRotateCondition(1),
+						m_rightRotateCondition(1),
+						m_finish(0)
 {
-	this->setType(SNAKE_HEAD);
+	this->setType(type);
 }
 
 SnakeHead::SnakeHead(SnakeHead const & rhs) : SnakeSegment(rhs)
 {
 	setDirX(rhs.getDirX());
 	setDirY(rhs.getDirY());
+	setDelta(rhs.getDelta());
+	setLeftRotationCondition(rhs.getLeftRotationCondition());
+	setRightRotationCondition(rhs.getRightRotationCondition());
+	setFinish(rhs.getFinish());
+	setFinishMessage(rhs.getFinishMessage());
 }
 
 SnakeHead & SnakeHead::operator = (SnakeHead const & rhs)
@@ -40,9 +46,13 @@ SnakeHead & SnakeHead::operator = (SnakeHead const & rhs)
 	if (this == &rhs)
 		return *this;
 
-	(SnakeHead&)(*this) = rhs;
 	setDirX(rhs.getDirX());
 	setDirY(rhs.getDirY());
+	setDelta(rhs.getDelta());
+	setLeftRotationCondition(rhs.getLeftRotationCondition());
+	setRightRotationCondition(rhs.getRightRotationCondition());
+	setFinish(rhs.getFinish());
+	setFinishMessage(rhs.getFinishMessage());
 
 	return *this;
 }
@@ -56,36 +66,66 @@ int 		SnakeHead::getDirX() const
 {
 	return m_dirX;
 }
+
 int 		SnakeHead::getDirY() const
 {
 	return m_dirY;
+}
+
+int 		SnakeHead::getLeftRotationCondition() const
+{
+	return m_leftRotateCondition;
+}
+
+int 		SnakeHead::getRightRotationCondition() const
+{
+	return m_rightRotateCondition;
+}
+
+int			SnakeHead::getFinish() const
+{
+	return m_finish;
+}
+
+std::string SnakeHead::getFinishMessage() const
+{
+	return m_finishMessage;
+}
+
+float 		SnakeHead::getDelta() const
+{
+	return m_delta;
+}
+
+void 		SnakeHead::setDirY(const int & y)
+{
+	m_dirY = y;
 }
 void 		SnakeHead::setDirX(const int & x)
 {
 	m_dirX = x;
 }
-void 		SnakeHead::setDirY(const int & y)
-{
-	m_dirY = y;
-}
-
-int 		SnakeHead::getRotationCondition() const
-{
-	return m_rotateCondition;
-}
-
 void 		SnakeHead::setDelta(const float & delta)
 {
 	m_delta = delta;
 }
 
-void 		SnakeHead::setRotationCondition(const int & condition)
+void 		SnakeHead::setLeftRotationCondition(const int & condition)
 {
-	m_rotateCondition = condition;
+	m_leftRotateCondition = condition;
 }
 
-
-float 		SnakeHead::getDelta() const
+void 		SnakeHead::setRightRotationCondition(const int & condition)
 {
-	return m_delta;
+	m_rightRotateCondition = condition;
+}
+
+void 		SnakeHead::setFinish(const int & finish)
+{
+	m_finish = finish;
+}
+
+void 		SnakeHead::setFinishMessage(const std::string & finishMessage)
+{
+	m_finishMessage =  finishMessage;
 }

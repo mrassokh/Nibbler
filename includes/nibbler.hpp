@@ -14,7 +14,6 @@
 # define NIBBLER_HPP
 #include <dlfcn.h>
 #include <iostream>
-#include "IEntity.hpp"
 #include "IWindow.hpp"
 #include "GameField.hpp"
 #include "Snake.hpp"
@@ -27,25 +26,32 @@
 #include <array>
 #include <vector>
 #include "Obstacle.hpp"
+#include "ObstacleProcessor.hpp"
 #include <cstring>
+
 class Nibbler
 {
 public:
-	static	Nibbler								&Instance(int width, int height);
+	static	Nibbler								&Instance(int width, int height, int mult);
 	void  										processing();
-	//void  										processing(char **av);
 
 private:
 	Nibbler();
-	Nibbler(int width, int height);
+	Nibbler(int width, int height, int mult);
 	Nibbler(Nibbler const & rhs) = delete;
 	Nibbler & operator = (Nibbler const & rhs) = delete;
 	virtual ~Nibbler();
 
+
 	void 										dlerror_wrapper(void);
+	void 										initGame();
+	void 										startScreen();
 	void 										gameLoop();
+	void 										gameOverScreen();
+	void 										clearGame();
+
 	void 										draw();
-	void 										update();
+	int 										update();
 
 
 	void 										eventHandling();
@@ -58,11 +64,15 @@ private:
 	void 										handleChangeToSdlEvent();
 	void 										handleChangeToNcursEvent();
 	void 										handleChangeToGlutEvent();
-	void 										handleChangeMultiplayerEvent();
+	void 										handleNewGameEvent();
 	void 										handleDefaultEvent();
+
+	void 										rotateToLeft(std::shared_ptr<SnakeHead> headSquare);
+	void 										rotateToRight(std::shared_ptr<SnakeHead> headSquare);
 
 
 	std::array<void (Nibbler::*)(), 10>			m_eventFunctions;
+	std::array<void (Nibbler::*)(), 3>			m_windowStateFunctions;
 
 	std::shared_ptr<std::vector
 			<std::shared_ptr<FoodSegment>>> 	m_foodList;
@@ -70,13 +80,22 @@ private:
 	std::shared_ptr<std::vector
 			<std::shared_ptr<Obstacle>>> 		m_obstacleList;
 
+	Snake										m_snake;
+	Snake										m_secondSnake;
+
+
 	GameField									*m_gameField;
 	FoodProcessor								*m_foodProcessor;
 	SnakeProcessor								*m_snakeProcessor;
+	ObstacleProcessor							*m_obstacleProcessor;
 	Render 										*m_render;
-	Snake										m_snake;
+
+
+
 	IWindow 									*m_newWindow;
 	int 										m_loopCondition;
+	int 										m_startCondition;
+	int 										m_gameOverCondition;
 	int 										m_velocity;
 	double										m_time;
 	double										m_deltaTime;
@@ -86,7 +105,8 @@ private:
 	void 										*dl_handle;
 	int 										m_multMode;
 	const char* 								m_sharedWindowLib;
+	enum STATE									m_windowState;
+	std::string 								m_finishMessage;
 };
-
 
 #endif

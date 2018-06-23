@@ -1,23 +1,32 @@
-// #include <dlfcn.h>
-// #include <iostream>
-// #include "IEntity.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrassokh <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/16 15:40:21 by mrassokh          #+#    #+#             */
+/*   Updated: 2018/06/16 15:40:22 by mrassokh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "nibbler.hpp"
 #include "CustomExeptions.hpp"
-
+#include "InputChecker.hpp"
 
 
 int main(int ac, char **av)
 {
+	InputChecker *checker = InputChecker::getInstance();
+
 	try{
-		if (ac != 3){
-			throw CustomExeption("Wrong number of input arguments!!!");
-		}
+		checker->checkAndStoreInput(ac, av);
 	} catch (std::exception& e)	{
-		std::cerr << "exception caught: " << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 		return 0;
 	}
 
-	Nibbler::Instance(std::stoi(av[1]),std::stoi(av[2])).processing();
-
-    return 0;
+	Nibbler::Instance(checker->getWidth(), checker->getHeight(),
+						checker->getMultMode()).processing();
+	return 0;
 }

@@ -50,9 +50,23 @@ void 					SdlWindow::endCycl()
 	SDL_RenderPresent(m_renderer);
 }
 
-void 					SdlWindow::quit(void)
+void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
+{
+	if (!mult){
+		printf("score is %d;\n velocity is %d\n", score, velocity);
+	} else {
+		if (type == SNAKE_HEAD) {
+			printf("FIRST PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+		} else if (type == SNAKE_SECOND_HEAD){
+			printf("SECOND PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+		}
+	}
+}
+
+void 					SdlWindow::quit(std::string const & finishMessage)
 {
 	SDL_Delay(1000);
+	printf("%s\n", finishMessage.c_str());
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
@@ -89,8 +103,8 @@ EVENTS 			SdlWindow::handleKeyDown(int key) const
 		return CHANGE_TO_NCURS_WIN;
 	else if (key == SDLK_d)
 		return CHANGE_TO_GLUT_WIN;
-	else if (key == SDLK_m)
-		return CHANGE_MULTIPLAYER_MODE;
+	else if (key == SDLK_n)
+		return NEW_GAME;
 	else
 		return DEFAULT;
 }
@@ -107,12 +121,34 @@ void 			SdlWindow::drawSquare(int x, int y, eType type)
 		SDL_SetRenderDrawColor(m_renderer,242, 0, 242, 255);
 	} else if (type == SNAKE_HEAD) {
 		SDL_SetRenderDrawColor(m_renderer,242, 0, 42, 255);
+	} else if (type == SNAKE_SECOND_HEAD) {
+		SDL_SetRenderDrawColor(m_renderer,42, 0, 242, 255);
 	} else if (type == OBSTACLE) {
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 142, 255);
 	}  else  {
 		SDL_SetRenderDrawColor(m_renderer,242, 242, 242, 255);
 	}
 	SDL_RenderFillRect(m_renderer, &rectangle);
+}
+
+void 				SdlWindow::drawStart()
+{
+	SDL_SetRenderDrawColor(m_renderer, 250, 0, 0, 255);
+	printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
+	SDL_RenderClear(m_renderer);
+	SDL_RenderPresent(m_renderer);
+}
+
+void 				SdlWindow::drawGameOver(std::string const & finishMessage)
+{
+	SDL_SetRenderDrawColor(m_renderer, 0, 0, 250, 255);
+
+	//printf("%s\n", finishMessage.c_str());
+	//printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
+	SDL_RenderClear(m_renderer);
+	SDL_RenderPresent(m_renderer);
+	if (finishMessage == "")
+		return ;
 }
 
 SdlWindow		*createWindow(int width, int height)

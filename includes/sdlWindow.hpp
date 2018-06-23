@@ -22,10 +22,13 @@ public:
 	virtual ~SdlWindow();
 	virtual EVENTS 					getEvent(void);
 	virtual void 					drawSquare(int x, int y, eType type);
+	virtual void 					drawScore(int score, int velocity, eType type, int mult);
+	virtual void 					drawStart();
+	virtual void 					drawGameOver(std::string const & finishMessage);
 	virtual void 					startCycl(void);
 	virtual void 					endCycl(void);
 	virtual void 					init(void);
-	virtual void 					quit(void);
+	virtual void 					quit(std::string const & finishMessage);
 
 	EVENTS 							handleKeyDown(int key) const;
 private:

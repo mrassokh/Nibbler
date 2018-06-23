@@ -13,20 +13,22 @@
 #ifndef OBSTACLE_PROCESSOR_HPP
 # define OBSTACLE_PROCESSOR_HPP
 #include "ObstacleDirector.hpp"
+#include "DotObstacleBuilder.hpp"
+#include  "ZetObstacleBuilder.hpp"
+#include "LObstacleBuilder.hpp"
 #include "GameField.hpp"
 #include <vector>
+#include <array>
 
 class ObstacleProcessor
 {
 public:
-	static ObstacleProcessor	&Instance();
+	static ObstacleProcessor			&Instance();
 
-	void 					initObstacleList(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
-										GameField *gameField);
-	// void 					timeUpdateFoodList(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
-	// 									GameField *gameField);
-	void 					createObstacle(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
-										GameField *gameField);
+	void 								initObstacleList(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
+											GameField *gameField);
+	void 								createObstacle(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
+											GameField *gameField);
 
 private:
 	ObstacleProcessor();
@@ -35,7 +37,10 @@ private:
 	virtual ~ObstacleProcessor();
 
 	ObstacleDirector						*m_obstacleDirector;
-	std::shared_ptr<DotObstacleBuilder>	 	m_dotObstacleBuilder;
-};
+	DotObstacleBuilder	 					*m_dotObstacleBuilder;
+	ZetObstacleBuilder						*m_zetObstacleBuilder;
+	LObstacleBuilder						*m_lObstacleBuilder;
 
+	std::array<ObstacleBuilder *, 3>		m_builders;
+};
 #endif

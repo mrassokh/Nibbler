@@ -13,6 +13,7 @@
 #ifndef OBSTACLE_HPP
 #define OBSTACLE_HPP
 #include "SquareSegment.hpp"
+#include "IWindow.hpp"
 #include <vector>
 
 class Obstacle {
@@ -33,6 +34,7 @@ public:
 	std::shared_ptr<std::vector
 			<std::shared_ptr<SquareSegment>>>		getObstacleSegments();
 	void 											clearObstacleSegments();
+	void 											drawObstacle(IWindow *window);
 
 
 private:
@@ -42,7 +44,6 @@ private:
 
 	std::shared_ptr<std::vector
 			<std::shared_ptr<SquareSegment>>> 		m_obstacleSegments;
-
 };
 
 #endif

@@ -67,16 +67,19 @@ void 					NcursWindow::endCycl()
 // 	//SDL_RenderPresent(m_renderer);
 // }
 
-void 					NcursWindow::quit(void)
+void 					NcursWindow::quit(std::string const & finishMessage)
 {
+	if (finishMessage == "")
+		return;
 	// SDL_Delay(1000);
 	// SDL_DestroyRenderer(m_renderer);
 	// SDL_DestroyWindow(m_window);
 	// SDL_Quit();
 }
 
-EVENTS 			NcursWindow::getEvent(void)
+EVENTS 			NcursWindow::getEvent()
 {
+
 	// while (SDL_PollEvent(&m_event)){
 	// if (m_event.type == SDL_QUIT ||  m_event.key.keysym.sym == SDLK_ESCAPE)
 	// 	return EXIT;
@@ -114,7 +117,11 @@ EVENTS 			NcursWindow::handleKeyDown(int key) const
 		return DEFAULT;
 	return DEFAULT;
 }
-
+void 					NcursWindow::drawScore(int score, int velocity, eType type, int mult)
+{
+	if (score != velocity)
+	mult  = type * 10;
+}
 void 			NcursWindow::drawSquare(int x, int y, eType type)
 {
 	if (type)
@@ -133,6 +140,17 @@ void 			NcursWindow::drawSquare(int x, int y, eType type)
 	// 	SDL_SetRenderDrawColor(m_renderer,242, 242, 242, 255);
 	// }
 	// SDL_RenderFillRect(m_renderer, &rectangle);
+}
+
+void 					NcursWindow::drawStart()
+{
+
+}
+
+void 					NcursWindow::drawGameOver(std::string const & finishMessage)
+{
+	if (finishMessage == "")
+		return;
 }
 
 NcursWindow		*createWindow(int width, int height)

@@ -12,25 +12,43 @@
 
 #include "Snake.hpp"
 
-Snake::Snake() : m_eating(0), m_score(0)
+Snake::Snake() : m_eating(0), m_score(0), m_nextIsNotObstacle(1)
 {
 	m_snake = std::shared_ptr<std::list<std::shared_ptr<SquareSegment>>>(new std::list<std::shared_ptr<SquareSegment>>);
 }
 
 Snake::Snake(Snake const & rhs)
 {
-	(void)rhs;
+	setEating(rhs.getEating());
+	setScore(rhs.getScore());
+	setNextIsNotObstacle(rhs.getNextIsNotObstacle());
+	getSnake()->clear();
+
+	auto snake = getSnake();
+	auto it = (const_cast<Snake &>(rhs)).getSnake()->begin();
+	while (it != (const_cast<Snake &>(rhs)).getSnake()->end())
+	{
+		std::shared_ptr<SquareSegment> newSegment = std::shared_ptr<SquareSegment>(new SquareSegment(*(std::dynamic_pointer_cast<SquareSegment>(*it))));
+		snake->push_back(newSegment);
+		it++;
+	}
 }
 
 Snake & Snake::operator = (Snake const & rhs)
 {
-	(void)rhs;
+	if (this == &rhs){
+		return *this;
+	}
+
+	setEating(rhs.getEating());
+	setScore(rhs.getScore());
+	setNextIsNotObstacle(rhs.getNextIsNotObstacle());
 	return *this;
 }
 
 Snake::~Snake()
 {
-
+	getSnake()->clear();
 }
 
 std::shared_ptr<std::list<std::shared_ptr<SquareSegment>>>	Snake::getSnake()
@@ -59,4 +77,15 @@ int 														Snake::getScore() const
 void 														Snake::setScore(int const & score)
 {
 	m_score = score;
+}
+
+
+int 														Snake::getNextIsNotObstacle() const
+{
+	return 	m_nextIsNotObstacle;
+}
+
+void 														Snake::setNextIsNotObstacle(int const & nextIsNotObstacle)
+{
+	m_nextIsNotObstacle = nextIsNotObstacle;
 }

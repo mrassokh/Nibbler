@@ -54,7 +54,9 @@ ROOT = main.cpp
 FUNCTIONS = nibbler.cpp SquareSegment.cpp GameField.cpp SnakeSegment.cpp \
 			SnakeHead.cpp Snake.cpp FoodSegment.cpp CustomExeptions.cpp \
 			FoodProcessor.cpp Render.cpp SnakeProcessor.cpp Obstacle.cpp \
-			ObstacleBuilder.cpp DotObstacleBuilder.cpp ObstacleDirector.cpp
+			ObstacleBuilder.cpp DotObstacleBuilder.cpp ObstacleDirector.cpp \
+			ObstacleProcessor.cpp ZetObstacleBuilder.cpp LObstacleBuilder.cpp \
+			InputChecker.cpp
 
 
 SRC = $(ROOT) $(FUNCTIONS)
@@ -80,6 +82,10 @@ vpath %.cpp $(SRC_PATH)
 vpath %.hpp $(HEADERS_PATH)
 
 all: $(NAME)
+
+#exp :
+#	set -e; \
+#	. ./ddd.sh
 
 $(NAME): $(OBJ) make_libs
 	@echo "\033[0;32mCompile program ...\033[0m"

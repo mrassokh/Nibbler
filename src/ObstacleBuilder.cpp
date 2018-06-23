@@ -12,7 +12,7 @@
 
 #include "ObstacleBuilder.hpp"
 
-ObstacleBuilder::ObstacleBuilder()
+ObstacleBuilder::ObstacleBuilder(): m_X(0), m_Y(0)
 {
 
 }
@@ -57,10 +57,6 @@ void 		ObstacleBuilder::createNewObstacle()
 	m_obstacle = new Obstacle();
 }
 
-Obstacle	ObstacleBuilder::getReadyObstacle()
-{
-	return 	*m_obstacle;
-}
 
 int			ObstacleBuilder::getX() const
 {
@@ -75,4 +71,18 @@ int			ObstacleBuilder::getY() const
 Obstacle 	*ObstacleBuilder::getObstacle() const
 {
 	return m_obstacle;
+}
+
+Obstacle	*ObstacleBuilder::getReadyObstacle()
+{
+	return m_obstacle;
+}
+
+void 		ObstacleBuilder::setOneSegment(GameField *gamefield, int const & x, int const & y)
+{
+	auto obstacles = m_obstacle->getObstacleSegments();
+	auto segment = std::shared_ptr<SquareSegment>(new SquareSegment(x,
+									y, OBSTACLE));
+	gamefield->setFieldElement(segment->getGridX(), segment->getGridY(), segment);
+	obstacles->push_back(segment);
 }

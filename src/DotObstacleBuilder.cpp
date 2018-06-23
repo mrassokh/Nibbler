@@ -22,21 +22,24 @@ DotObstacleBuilder::~DotObstacleBuilder()
 
 }
 
-int 		DotObstacleBuilder::checkObstacleToGameField(GameField *gamefield)
+int 		DotObstacleBuilder::checkObstacleToGameField(GameField *gamefield,
+													int const & x, int const & y)
 {
-	if (gamefield->getFieldElement(m_X, m_Y))
+	if (gamefield->getFieldElement(x, y)){
 		return (0);
-	return (1);
+	} else {
+		return (1);
+	}
 }
 
-void 		DotObstacleBuilder::setFirstX()
+void 		DotObstacleBuilder::setFirstX(int const & x)
 {
-	m_obstacle->setFirstX(m_X);
+	m_obstacle->setFirstX(x);
 }
 
-void 		DotObstacleBuilder::setFirstY()
+void 		DotObstacleBuilder::setFirstY(int const & y)
 {
-	m_obstacle->setFirstY(m_Y);
+	m_obstacle->setFirstY(y);
 }
 
 void 		DotObstacleBuilder::setSize()
@@ -44,10 +47,8 @@ void 		DotObstacleBuilder::setSize()
 	m_obstacle->setSize(1);
 }
 
-void 		DotObstacleBuilder::setObstacleSegments()
+void 		DotObstacleBuilder::setObstacleSegments(GameField *gamefield,
+													int const & x, int const & y)
 {
-	auto obstacles = m_obstacle->getObstacleSegments();
-	auto segment = std::shared_ptr<SquareSegment>(new SquareSegment(m_obstacle->getFirstX(),
-										m_obstacle->getFirstY(), OBSTACLE));
-	obstacles->push_back(segment);
+	setOneSegment(gamefield, x, y);
 }

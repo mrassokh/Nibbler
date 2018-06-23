@@ -14,6 +14,7 @@
 # define RENDER_HPP
 #include "FoodSegment.hpp"
 #include "Snake.hpp"
+#include "Obstacle.hpp"
 #include "IWindow.hpp"
 #include <vector>
 
@@ -24,6 +25,8 @@ public:
 
 	void 			drawSnake(Snake &snake, IWindow *window) const;
 	void 			drawFood(std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>> foodList,
+							IWindow *window) const;
+	void 			drawObstacles(std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>> obstacleList,
 							IWindow *window) const;
 private:
 	Render();

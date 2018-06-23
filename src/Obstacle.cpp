@@ -59,18 +59,12 @@ Obstacle::~Obstacle()
 	clearObstacleSegments();
 }
 
-void 											Obstacle::clearObstacleSegments()
+void 					Obstacle::clearObstacleSegments()
 {
-	// auto it = getObstacleSegments()->begin();
-	// while (it != getObstacleSegments()->end())
-	// {
-	// //	delete std::dynamic_pointer_cast<SquareSegment>(*it);
-	// 	it++;
-	// }
 	getObstacleSegments()->clear();
 }
 
-void 											Obstacle::setFirstX(int const & firstX)
+void 					Obstacle::setFirstX(int const & firstX)
 {
 	if (firstX < 0){
 		m_firstX = 0;
@@ -112,4 +106,14 @@ std::shared_ptr<std::vector
 		<std::shared_ptr<SquareSegment>>>		Obstacle::getObstacleSegments()
 {
 	return m_obstacleSegments;
+}
+
+void 											Obstacle::drawObstacle(IWindow *window)
+{
+	auto obstacleSquare = getObstacleSegments()->begin();
+	while (obstacleSquare != getObstacleSegments()->end()){
+		window->drawSquare((*obstacleSquare)->getGridX(),(*obstacleSquare)->getGridY(),
+															(*obstacleSquare)->getType());
+		obstacleSquare++;
+	}
 }
