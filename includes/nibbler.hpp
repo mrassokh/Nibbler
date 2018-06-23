@@ -62,7 +62,7 @@ private:
 	void 										handleRightSecondEvent();
 	void 										handleExitEvent();
 	void 										handleChangeToSdlEvent();
-	void 										handleChangeToNcursEvent();
+	void 										handleChangeToSfmlEvent();
 	void 										handleChangeToGlutEvent();
 	void 										handleNewGameEvent();
 	void 										handleDefaultEvent();

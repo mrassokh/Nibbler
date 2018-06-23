@@ -1,0 +1,9 @@
+.idea/
+CMakeLists.txt
+cmake-build-debug/
+ncurslib.so
+nibbler
+obj/
+sdllib.so
+sdllib/SDL2.framework/
+.DS_Store

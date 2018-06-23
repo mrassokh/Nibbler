@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 
-#include "nibbler.hpp"
+//#include "nibbler.hpp"
+#include "../includes/nibbler.hpp"
 
 Nibbler::Nibbler() : m_loopCondition(1),
 						m_velocity(10),
@@ -53,7 +54,7 @@ Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 	m_eventFunctions[3] = &Nibbler::handleRightSecondEvent;
 	m_eventFunctions[4] = &Nibbler::handleExitEvent;
 	m_eventFunctions[5] = &Nibbler::handleChangeToSdlEvent;
-	m_eventFunctions[6] = &Nibbler::handleChangeToNcursEvent;
+	m_eventFunctions[6] = &Nibbler::handleChangeToSfmlEvent;
 	m_eventFunctions[7] = &Nibbler::handleChangeToGlutEvent;
 	m_eventFunctions[8] = &Nibbler::handleNewGameEvent;
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
@@ -64,7 +65,7 @@ Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 
 	m_foodList = std::shared_ptr<std::vector<std::shared_ptr<FoodSegment>>>(new std::vector<std::shared_ptr<FoodSegment>>);
 	m_obstacleList = std::shared_ptr<std::vector<std::shared_ptr<Obstacle>>>(new std::vector<std::shared_ptr<Obstacle>>);
-	m_sharedWindowLib = "sdllib.so";
+	m_sharedWindowLib = "lib1_sdl.so";
 }
 
 Nibbler			&Nibbler::Instance(int width, int height, int mult)
@@ -109,11 +110,11 @@ void  			Nibbler::processing()
 		dl_handle = dlopen(m_sharedWindowLib, RTLD_LAZY | RTLD_LOCAL);
 		if (!dl_handle)
 			dlerror_wrapper();
-			printf("m_sharedWindowLib %s!!!\n", m_sharedWindowLib);
+		printf("m_sharedWindowLib %s!!!\n", m_sharedWindowLib);
 		m_windowCreator = reinterpret_cast<IWindow *(*)(int width, int height)>(dlsym(dl_handle, "createWindow"));
 		if (!m_windowCreator)
 			dlerror_wrapper();
-		m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
+	    m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
 		m_newWindow->init();
 		(this->*m_windowStateFunctions[m_windowState])();
 		m_windowDestructor = reinterpret_cast<void (*)(IWindow*)>(dlsym(dl_handle, "deleteWindow"));
@@ -267,18 +268,17 @@ void 			Nibbler::handleChangeToSdlEvent()
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToSdlEvent!!!\n");
-	m_sharedWindowLib = "sdllib.so";
+	printf("handleChangeToSdlEvent!!!\n\n\n");
+	m_sharedWindowLib = "lib1_sdl.so";
 }
-
-void 			Nibbler::handleChangeToNcursEvent()
+void 				Nibbler::handleChangeToSfmlEvent()
 {
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToNcursEvent!!!\n");
-	m_sharedWindowLib = "ncurslib.so";
+	printf("handleChangeToSfmlEvent!!!\n\n\n");
+	m_sharedWindowLib = "lib2_sfml.so";
 }
 
 void 		Nibbler::handleChangeToGlutEvent()

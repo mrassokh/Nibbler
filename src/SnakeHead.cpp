@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "SnakeHead.hpp"
+#include "../includes/SnakeHead.hpp"
 
 SnakeHead::SnakeHead()
 {

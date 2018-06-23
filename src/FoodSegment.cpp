@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FoodSegment.hpp"
+#include "../includes/FoodSegment.hpp"
 #include <ctime>
 
 FoodSegment::FoodSegment()

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ObstacleDirector.hpp"
+#include "../includes/ObstacleDirector.hpp"
 
 ObstacleDirector & ObstacleDirector::Instance()
 {

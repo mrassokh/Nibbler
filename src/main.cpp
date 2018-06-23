@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nibbler.hpp"
-#include "CustomExeptions.hpp"
-#include "InputChecker.hpp"
+#include "../includes/nibbler.hpp"
+#include "../includes/CustomExeptions.hpp"
+#include "../includes/InputChecker.hpp"
 
 
 int main(int ac, char **av)

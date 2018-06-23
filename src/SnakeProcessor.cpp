@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 
-#include "SnakeProcessor.hpp"
+#include "../includes/SnakeProcessor.hpp"
 
 SnakeProcessor::SnakeProcessor()
 {

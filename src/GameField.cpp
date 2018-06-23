@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GameField.hpp"
+#include "../includes/GameField.hpp"
 
 
 GameField::GameField(int const & width, int const & height)

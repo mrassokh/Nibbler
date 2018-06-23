@@ -51,4 +51,5 @@ public:
 	virtual void 			quit(std::string const & finishMessage) = 0;
 };
 
+
 # endif

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "sdlWindow.hpp"
+#include "../includes/sdlWindow.hpp"
 
 SdlWindow::SdlWindow()
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Obstacle.hpp"
+#include "../includes/Obstacle.hpp"
 
 Obstacle::Obstacle()
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FoodProcessor.hpp"
+#include "../includes/FoodProcessor.hpp"
 
 FoodProcessor	&FoodProcessor::Instance()
 {
