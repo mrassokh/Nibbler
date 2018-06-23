@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/sfmlWindow.hpp"
-#include "SFML2.2/SFML-2.2-osx-clang-universal/Frameworks/SFML.framework/Versions/Current/Headers/System/Vector2.hpp"
-//https://github.com/noxsnono/Nibbler/blob/master/lib_sfml/lib_sfml.class.cpp
 
 SfmlWindow::SfmlWindow()
 {}
