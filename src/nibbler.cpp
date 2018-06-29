@@ -108,66 +108,42 @@ void 								Nibbler::clearGame()
 void  			Nibbler::processing()
 {
 	while (strcmp(m_sharedWindowLib, "exit") != 0){
-		std::cout << "1) Line" << std::endl;
 		dl_handle = dlopen(m_sharedWindowLib, RTLD_LAZY | RTLD_LOCAL);
-		std::cout << "2) Line" << std::endl;
 		if (!dl_handle) {
-			std::cout << "3) Line" << std::endl;
 			dlerror_wrapper();
 		}
-		printf("m_sharedWindowLib %s!!!\n", m_sharedWindowLib);
 		m_windowCreator = reinterpret_cast<IWindow *(*)(int width, int height)>(dlsym(dl_handle, "createWindow"));
-		std::cout << "4) Line" << std::endl;
 		if (!m_windowCreator) {
-			std::cout << "5) Line" << std::endl;
 			dlerror_wrapper();
 		}
-		std::cout << "6) Line" << std::endl;
 	    m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
-		std::cout << "7) Line" << std::endl;
 		m_newWindow->init();
-		std::cout << "8) Line" << std::endl;
 		(this->*m_windowStateFunctions[m_windowState])();
-		std::cout << "9) Line" << std::endl;
 		m_windowDestructor = reinterpret_cast<void (*)(IWindow*)>(dlsym(dl_handle, "deleteWindow"));
-		std::cout << "10) Line" << std::endl;
 		if (!m_windowDestructor){
-			std::cout << "11) Line" << std::endl;
 			dlerror_wrapper();
 		}
-		std::cout << "12) Line" << std::endl;
 		m_windowDestructor(m_newWindow);
-		std::cout << "13) Line" << std::endl;
 		dlclose(dl_handle);
-		std::cout << "14) Line" << std::endl;
 	}
 }
 
 void 	Nibbler::startScreen()
 {
 	m_startCondition = 1;
-	std::cout << "Start screen: 1) Line" << std::endl;
 	initGame();
-	std::cout << "Start screen: 2) Line" << std::endl;
 	while (m_startCondition){
-		std::cout << "Start screen: 3) Line" << std::endl;
 		eventHandling();
-		std::cout << "Start screen: 4) Line" << std::endl;
 		m_newWindow->drawStart();
-		std::cout << "Start screen: 5) Line" << std::endl;
 	}
 }
 
 void 	Nibbler::gameOverScreen()
 {
 	m_gameOverCondition = 1;
-	std::cout << "Game over screen: 1) Line" << std::endl;
 	while (m_gameOverCondition){
-		std::cout << "Game over screen: 2) Line" << std::endl;
 		eventHandling();
-		std::cout << "Game over screen: 3) Line" << std::endl;
 		m_newWindow->drawGameOver(m_finishMessage);
-		std::cout << "Game over screen: 4) Line" << std::endl;
 	}
 }
 
@@ -175,54 +151,51 @@ void 			Nibbler::gameLoop()
 {
 	double velocity_incr = 0;
 	m_loopCondition = 1;
-	std::cout << "Game loop: 1) Line" << std::endl;
 	m_snakeProcessor->configure(m_foodList, m_gameField, m_newWindow, &m_loopCondition, m_multMode);
-	std::cout << "Game loop: 2) Line" << std::endl;
 	while (m_loopCondition) {
-		std::cout << "Game loop: 3) Line" << std::endl;
 		clock_t start = clock();
-		std::cout << "Game loop: 4) Line" << std::endl;
 		if (!update())
 			break;
-		std::cout << "Game loop: 5) Line" << std::endl;
 		draw();
-		std::cout << "Game loop: 6) Line" << std::endl;
 		eventHandling();
-		std::cout << "Game loop: 7) Line" << std::endl;
 		m_deltaTime = static_cast<double>((clock() - start ))/ CLOCKS_PER_SEC;
-		std::cout << "Game loop: 8) Line" << std::endl;
 		m_time += m_deltaTime;
 		if (velocity_incr > 1 && m_velocity < 50) {
 			m_velocity += 5;
 			velocity_incr = 0;
 		}
 		velocity_incr += m_deltaTime;
-		std::cout << "Game loop: 9) Line" << std::endl;
 	}
 }
 
 int 			Nibbler::update()
 {
 	try {
+		std::cout << "update 1" << std::endl;
 		m_snakeProcessor->updateSnake(m_snake, m_velocity, m_deltaTime);
-		std::cout << "Update: 1) Line" << std::endl;
-		if (m_multMode)
+		std::cout << "update 2" << std::endl;
+		if (m_multMode) {
+			std::cout << "update 3" << std::endl;
 			m_snakeProcessor->updateSnake(m_secondSnake, m_velocity, m_deltaTime);
-		std::cout << "Update: 2) Line" << std::endl;
+			std::cout << "update 4" << std::endl;
+		}
 		m_snakeProcessor->checkFinish(m_snake, m_secondSnake);
-		std::cout << "Update: 3) Line" << std::endl;
+		std::cout << "update 5" << std::endl;
 		m_foodProcessor->timeUpdateFoodList(m_foodList, m_gameField);
-		std::cout << "Update: 4) Line" << std::endl;
+		std::cout << "update 6" << std::endl;
 	}
 	catch (std::exception& e)	{
+		std::cout << "update 7" << std::endl;
 		m_finishMessage = static_cast<std::string>(e.what()) + "\nGAME OVER!!!";
+		std::cout << "update 8" << std::endl;
 		m_loopCondition = 0;
-		std::cout << "Update: 5) Line" << std::endl;
+		std::cout << "update 9" << std::endl;
 		clearGame();
+		std::cout << "update 10" << std::endl;
 		m_windowState = GAME_OVER;
-		std::cout << "Update: 6) Line" << std::endl;
+		std::cout << "update 11" << std::endl;
 		m_newWindow->quit(m_finishMessage);
-		std::cout << "Update: 7) Line" << std::endl;
+		std::cout << "update 11" << std::endl;
 		return (0);
 	}
 	return (1);

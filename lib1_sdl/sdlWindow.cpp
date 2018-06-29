@@ -13,29 +13,23 @@
 #include "../includes/sdlWindow.hpp"
 #include <unistd.h>
 
-void get_text_and_rect(SDL_Renderer *renderer, int x, int y, const char *text,
-					   SDL_Texture **texture, SDL_Rect *rect)
-{
-	char path[1024];
-	getcwd(path, sizeof(path));
-	std::string fontPath = path;
-	fontPath += "/fonts/arial.ttf";
-	std::cout << fontPath << std::endl;
-	TTF_Font* font = TTF_OpenFont("arial.ttf", 24);
-	if (font == NULL) {
-		printf("error: font not found\n");
-		exit(EXIT_FAILURE);
+void SdlWindow::showText(int x, int y, const char *text) {
+	int texW = 0;
+	int texH = 0;
+	int posX = x;
+	int posY = y;
+	SDL_Color color = { 255, 255, 255, 0 };
+	m_textSurface = TTF_RenderText_Blended_Wrapped(m_font, text, color, m_width / 2);
+	m_textTexture = SDL_CreateTextureFromSurface(m_renderer, m_textSurface);
+	SDL_QueryTexture(m_textTexture, NULL, NULL, &texW, &texH);
+	if (x == 0 && y == 0) {
+		posX = (m_width - texW) / 2;
+		posY = (m_height - texH) / 2;
 	}
-	SDL_Color textColor = { 255, 255, 255, 0 };
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, textColor);
-	*texture = SDL_CreateTextureFromSurface(renderer, textSurface);
-	int text_width = textSurface->w;
-	int text_height = textSurface->h;
-	SDL_FreeSurface(textSurface);
-	rect->x = x;
-	rect->y = y;
-	rect->w = text_width;
-	rect->h = text_height;
+	SDL_Rect dstrect = { posX, posY, texW, texH  };
+	SDL_RenderCopy(m_renderer, m_textTexture, NULL, &dstrect);
+//	SDL_FreeSurface(m_textSurface);
+//	SDL_DestroyTexture(m_textTexture);
 }
 
 
@@ -57,18 +51,30 @@ SdlWindow::~SdlWindow()
 
 }
 
-void 					SdlWindow::init(void)
+void 					SdlWindow::init()
 {
+	std::cout<< "Init" <<std::endl;
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
 	m_window = SDL_CreateWindow("SDL2 line drawing",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_width, m_height, 0);
 	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
+
+	char path[1024];
+	getcwd(path, sizeof(path));
+	std::string fontPath = path;
+	fontPath += "/fonts/arial.ttf";
+	std::cout << fontPath << std::endl;
+	m_font = TTF_OpenFont(fontPath.c_str(), 24);
+	if (m_font == NULL) {
+		printf("error: font not found\n");
+		exit(EXIT_FAILURE);
+	}
+	std::cout << "End init" << std::endl;
 }
 
 void 					SdlWindow::startCycl()
 {
-
 	SDL_SetRenderDrawColor(m_renderer, 244, 164, 96, 255);
 	SDL_RenderClear(m_renderer);
 }
@@ -80,25 +86,37 @@ void 					SdlWindow::endCycl()
 
 void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
 {
+	std::string results("score - " +std::to_string(score)+ "\nvelocity - " +std::to_string(velocity)+ "\n");
+//	text.setPosition(sf::Vector2f(m_width - 300, 50));
+//	if (!mult){
+//		text.setString(results.c_str());
+//	} else {
+//		if (type == SNAKE_HEAD) {
+//			results.insert(0, "FIRST PLAYER:\n");
+//		} else if (type == SNAKE_SECOND_HEAD){
+//			text.setPosition(sf::Vector2f(m_width - 300, 150));
+//			results.insert(0, "SECOND PLAYER:\n");
 	if (!mult){
-		printf("score is %d;\n velocity is %d\n", score, velocity);
+		showText(m_width - 200, 50, results.c_str());
 	} else {
 		if (type == SNAKE_HEAD) {
-			printf("FIRST PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+			results.insert(0, "FIRST PLAYER:\n");
+			showText(m_width - 200, 50, results.c_str());
 		} else if (type == SNAKE_SECOND_HEAD){
-			printf("SECOND PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+			results.insert(0, "SECOND PLAYER:\n");
+			showText(m_width - 200, 150, results.c_str());
 		}
 	}
 }
 
 void 					SdlWindow::quit(std::string const & finishMessage)
 {
-	printf("%s\n", finishMessage.c_str());
+	TTF_Quit();
 	SDL_Delay(1000);
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
-	TTF_Quit();
 	SDL_Quit();
+	printf("%s\n", finishMessage.c_str());
 }
 
 EVENTS 			SdlWindow::getEvent(void)
@@ -162,34 +180,23 @@ void 			SdlWindow::drawSquare(int x, int y, eType type)
 
 void 				SdlWindow::drawStart()
 {
-	SDL_Texture *texture;
-	SDL_Rect rect;
-	std::string text("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
-	std::cout << "Draw start: 1) Line" << std::endl;
-	get_text_and_rect(m_renderer, 0, 0, text.c_str(), &texture, &rect);
-	std::cout << "Draw start: 2) Line" << std::endl;
-	SDL_SetRenderDrawColor(m_renderer, 32,178,170, 255);
-	std::cout << "Draw start: 3) Line" << std::endl;
-	SDL_RenderClear(m_renderer);
-	std::cout << "Draw start: 4) Line" << std::endl;
-	printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
+	std::string text("For start new game press <<N>>\nFor Exit press <<ECS>>");
 
+	SDL_SetRenderDrawColor(m_renderer, 32,178,170, 255);
+	SDL_RenderClear(m_renderer);
+	showText(0, 0, text.c_str());
 	SDL_RenderPresent(m_renderer);
-	std::cout << "Draw start: 5) Line" << std::endl;
-	SDL_DestroyTexture(texture);
-	std::cout << "Draw start: 6) Line" << std::endl;
 }
 
 void 				SdlWindow::drawGameOver(std::string const & finishMessage)
 {
-	SDL_SetRenderDrawColor(m_renderer, 32,178,170, 255);
-
-	//printf("%s\n", finishMessage.c_str());
-	//printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
+	SDL_SetRenderDrawColor(m_renderer, 32, 178, 170, 255);
 	SDL_RenderClear(m_renderer);
+
+	std::string message = finishMessage;
+	message += "For start new game press <<N>>\nFor Exit press <<ECS>>";
+	showText(0, 0, message.c_str());
 	SDL_RenderPresent(m_renderer);
-	if (finishMessage == "")
-		return ;
 }
 
 SdlWindow		*createWindow(int width, int height)

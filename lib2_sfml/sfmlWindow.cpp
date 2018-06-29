@@ -33,17 +33,15 @@ void 					SfmlWindow::init(void)
 {
 	m_event = new sf::Event();
 
-	sf::Vector2i pos(0, 0);
-	try {
-		sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-		m_window = new sf::RenderWindow(
-				sf::VideoMode(m_width, m_height, desktop.bitsPerPixel),
-				"Genius");
-		m_window->setPosition(pos);
-		m_window->setFramerateLimit(60);
+	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), "Nibbler SFML");
+	try
+	{
+		if (m_window == NULL)
+			throw "Could not create sfml window";
 	}
-	catch (std::exception & e) {
-		std::cerr << "SFML EXCEPTION --] " << e.what() << std::endl;
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
 	}
 }
 
@@ -63,7 +61,7 @@ void 					SfmlWindow::quit(std::string const & finishMessage)
 	m_window->close();
 }
 
-EVENTS 			SfmlWindow::getEvent(void)
+EVENTS 			SfmlWindow::getEvent()
 {
 	while (m_window->pollEvent(*m_event)){
 		if (m_event->type == sf::Event::Closed)
