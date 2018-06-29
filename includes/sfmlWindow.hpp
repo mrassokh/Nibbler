@@ -9,7 +9,7 @@
 # include "SFML/Graphics.hpp"
 # include "SFML/Window.hpp"
 
-# define SQUARE_SIZE 40
+# define SQUARE_SIZE 80
 class SfmlWindow : public IWindow
 {
 public:

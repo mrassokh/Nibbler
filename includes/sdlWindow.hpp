@@ -14,6 +14,7 @@
 # define SDL_WINDOW_HPP
 # include "IWindow.hpp"
 # include "../lib1_sdl/SDL2.framework/Headers/SDL.h"
+# include "../lib1_sdl/SDL2_ttf.framework/Headers/SDL_ttf.h"
 # define SQUARE_SIZE 40
 class SdlWindow : public IWindow
 {
