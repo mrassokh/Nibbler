@@ -183,7 +183,7 @@ void 				SdlWindow::drawGameOver(std::string const & finishMessage)
 	SDL_RenderClear(m_renderer);
 
 	std::string message = finishMessage;
-	message += "For start new game press <<N>>\nFor Exit press <<ECS>>";
+	message += "\nFor start new game press <<N>>\nFor Exit press <<ECS>>";
 	showText(0, 0, message.c_str());
 	SDL_RenderPresent(m_renderer);
 }

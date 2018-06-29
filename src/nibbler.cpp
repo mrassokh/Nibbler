@@ -186,7 +186,8 @@ int 			Nibbler::update()
 	}
 	catch (std::exception& e)	{
 		std::cout << "update 7" << std::endl;
-		m_finishMessage = static_cast<std::string>(e.what()) + "\nGAME OVER!!!";
+		m_finishMessage = static_cast<std::string>(e.what());
+		m_finishMessage.insert(0, "GAME OVER!!!\n");
 		std::cout << "update 8" << std::endl;
 		m_loopCondition = 0;
 		std::cout << "update 9" << std::endl;
