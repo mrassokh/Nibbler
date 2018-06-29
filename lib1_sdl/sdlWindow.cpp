@@ -87,15 +87,6 @@ void 					SdlWindow::endCycl()
 void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
 {
 	std::string results("score - " +std::to_string(score)+ "\nvelocity - " +std::to_string(velocity)+ "\n");
-//	text.setPosition(sf::Vector2f(m_width - 300, 50));
-//	if (!mult){
-//		text.setString(results.c_str());
-//	} else {
-//		if (type == SNAKE_HEAD) {
-//			results.insert(0, "FIRST PLAYER:\n");
-//		} else if (type == SNAKE_SECOND_HEAD){
-//			text.setPosition(sf::Vector2f(m_width - 300, 150));
-//			results.insert(0, "SECOND PLAYER:\n");
 	if (!mult){
 		showText(m_width - 200, 50, results.c_str());
 	} else {
@@ -122,14 +113,12 @@ void 					SdlWindow::quit(std::string const & finishMessage)
 EVENTS 			SdlWindow::getEvent(void)
 {
 	while (SDL_PollEvent(&m_event)){
-	if (m_event.type == SDL_QUIT ||  m_event.key.keysym.sym == SDLK_ESCAPE)
-		return EXIT;
-	else if (m_event.type == SDL_KEYDOWN)
-	{
-		//printf("SDL_KEYDOWN %d\n", ret);
-
-		return handleKeyDown(m_event.key.keysym.sym);
-	}
+		if (m_event.type == SDL_QUIT ||  m_event.key.keysym.sym == SDLK_ESCAPE)
+			return EXIT;
+		else if (m_event.type == SDL_KEYDOWN)
+		{
+			return handleKeyDown(m_event.key.keysym.sym);
+		}
 	}
 	return DEFAULT;
 }
