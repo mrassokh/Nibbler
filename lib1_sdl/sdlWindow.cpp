@@ -48,7 +48,12 @@ SdlWindow::SdlWindow(int width, int height)
 
 SdlWindow::~SdlWindow()
 {
+	TTF_CloseFont(m_font);
 
+	TTF_Quit();
+	SDL_DestroyRenderer(m_renderer);
+	SDL_DestroyWindow(m_window);
+	SDL_Quit();
 }
 
 void 					SdlWindow::init()
@@ -102,12 +107,6 @@ void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
 
 void 					SdlWindow::quit(std::string const & finishMessage)
 {
-	TTF_CloseFont(m_font);
-
-	TTF_Quit();
-	SDL_DestroyRenderer(m_renderer);
-	SDL_DestroyWindow(m_window);
-	SDL_Quit();
 	printf("%s\n", finishMessage.c_str());
 }
 

@@ -225,8 +225,7 @@ void 			Nibbler::handleLeftFirstEvent()
 		return ;
 
 	auto headSquare = std::dynamic_pointer_cast<SnakeHead>(*(m_snake.getSnake()->begin()));
-   	printf("headSquare->getLeftRotationCondition()  = %d\n",headSquare->getLeftRotationCondition());
-	if (headSquare->getLeftRotationCondition() < 0)
+ 	if (headSquare->getLeftRotationCondition() < 0)
 		return ;
 	rotateToLeft(headSquare);
 }
@@ -266,7 +265,7 @@ void 			Nibbler::handleRightSecondEvent()
 
 void 			Nibbler::handleExitEvent()
 {
-	m_newWindow->quit("");
+	//m_newWindow->quit("");
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
@@ -279,7 +278,7 @@ void 			Nibbler::handleChangeToSdlEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	m_newWindow->quit("");
+	//m_newWindow->quit("");
 	printf("handleChangeToSdlEvent!!!\n");
 	m_sharedWindowLib = "lib1_sdl.so";
 	m_changeLib = 1;
@@ -289,7 +288,7 @@ void 				Nibbler::handleChangeToSfmlEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	m_newWindow->quit("");
+	//m_newWindow->quit("");
 	printf("handleChangeToSfmlEvent!!!\n");
 	m_sharedWindowLib = "lib2_sfml.so";
 	m_changeLib = 1;

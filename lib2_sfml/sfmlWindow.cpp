@@ -57,7 +57,6 @@ void 					SfmlWindow::endCycl()
 
 void 					SfmlWindow::quit(std::string const & finishMessage)
 {
-	m_window->close();
 	if (finishMessage == "")
 		return;
 }
