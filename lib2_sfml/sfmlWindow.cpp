@@ -25,31 +25,29 @@ SfmlWindow::SfmlWindow(int width, int height)
 
 SfmlWindow::~SfmlWindow()
 {
-	delete m_event;
-	delete m_window;
+	 delete m_event;
+	 delete m_window;
 }
 
 void 					SfmlWindow::init(void)
 {
 	m_event = new sf::Event();
 
-	sf::Vector2i pos(0, 0);
-	try {
-		sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-		m_window = new sf::RenderWindow(
-				sf::VideoMode(m_width, m_height, desktop.bitsPerPixel),
-				"Genius");
-		m_window->setPosition(pos);
-		m_window->setFramerateLimit(60);
+	m_window = new sf::RenderWindow(sf::VideoMode(m_width, m_height), "Nibbler SFML");
+	try
+	{
+		if (m_window == NULL)
+			throw "Could not create sfml window";
 	}
-	catch (std::exception & e) {
-		std::cerr << "SFML EXCEPTION --] " << e.what() << std::endl;
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
 	}
 }
 
 void 					SfmlWindow::startCycl()
 {
-	m_window->clear(sf::Color(42, 242, 242, 255));
+	m_window->clear(sf::Color(244,164,96, 255)); //32,178,170
 }
 
 void 					SfmlWindow::endCycl()
@@ -59,17 +57,18 @@ void 					SfmlWindow::endCycl()
 
 void 					SfmlWindow::quit(std::string const & finishMessage)
 {
-	printf("%s\n", finishMessage.c_str());
 	m_window->close();
+	if (finishMessage == "")
+		return;
 }
 
-EVENTS 			SfmlWindow::getEvent(void)
+EVENTS 			SfmlWindow::getEvent()
 {
 	while (m_window->pollEvent(*m_event)){
-		if (m_event->type == sf::Event::Closed)
+		if (m_event->type == sf::Event::Closed){
 			return EXIT;
-		else if (m_event->type == sf::Event::KeyPressed)
-		{
+		}
+		else if (m_event->type == sf::Event::KeyPressed){
 			return handleKeyDown();
 		}
 	}
@@ -90,9 +89,9 @@ EVENTS 			SfmlWindow::handleKeyDown() const
 		case sf::Keyboard::A:
 			return CHANGE_TO_SDL_WIN;
 		case sf::Keyboard::S:
-			return CHANGE_TO_NCURS_WIN;
+			return CHANGE_TO_SFML_WIN;
 		case sf::Keyboard::D:
-			return CHANGE_TO_GLUT_WIN;
+			return CHANGE_TO_NCURS_WIN;
 		case sf::Keyboard::N:
 			return NEW_GAME;
 		case sf::Keyboard::Escape:
@@ -105,53 +104,100 @@ void 			SfmlWindow::drawSquare(int x, int y, eType type)
 {
 	sf::ConvexShape rect;
 
-	rect.setOutlineThickness(0.5);
+	rect.setOutlineThickness(1);
+	rect.setOutlineColor(sf::Color(150, 150, 150));
 	rect.setPointCount(4);
 	rect.setPoint(0, sf::Vector2f(0, 0));
 	rect.setPoint(1, sf::Vector2f(SQUARE_SIZE, 0));
 	rect.setPoint(2, sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));
 	rect.setPoint(3, sf::Vector2f(0, SQUARE_SIZE));
 	rect.setPosition(sf::Vector2f(x *  SQUARE_SIZE, y *  SQUARE_SIZE));
-	rect.setOutlineColor(sf::Color(150, 150, 150));
 	if (type == FOOD){
-		rect.setFillColor(sf::Color(242, 0, 242, 255));
+		rect.setFillColor(sf::Color(165, 42, 42, 255));
 	} else if (type == SNAKE_HEAD) {
 		rect.setFillColor(sf::Color(242, 0, 42, 255));
 	} else if (type == SNAKE_SECOND_HEAD) {
 		rect.setFillColor(sf::Color(42, 0, 242, 255));
 	} else if (type == OBSTACLE) {
-		rect.setFillColor(sf::Color(0, 0, 142, 255));
+		rect.setFillColor(sf::Color(105, 105, 105, 255));
 	}  else  {
-		rect.setFillColor(sf::Color(242, 242, 242, 255));
+		rect.setFillColor(sf::Color(255,222,173, 255));
 	}
+//	242, 242, 242
 	m_window->draw(rect);
 }
 
 
 void 			SfmlWindow::drawScore(int score, int velocity, eType type, int mult)
 {
+	sf::Font font;
+	font.loadFromFile("./fonts/arial.ttf");
+
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(25);
+	text.setStyle(sf::Text::Bold);
+	text.setColor(sf::Color::Black);
+	std::string results("score is " +std::to_string(score)+ "\nvelocity is " +std::to_string(velocity)+ "\n");
+	text.setPosition(sf::Vector2f(m_width - 300, 50));
 	if (!mult){
-		printf("score is %d;\n velocity is %d\n", score, velocity);
+		text.setString(results.c_str());
 	} else {
 		if (type == SNAKE_HEAD) {
-			printf("FIRST PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+			results.insert(0, "FIRST PLAYER:\n");
 		} else if (type == SNAKE_SECOND_HEAD){
-			printf("SECOND PLAYER:\n score is %d;\n velocity is %d\n", score, velocity);
+			text.setPosition(sf::Vector2f(m_width - 300, 150));
+			results.insert(0, "SECOND PLAYER:\n");
 		}
+		text.setString(results);
 	}
+	m_window->draw(text);
+
 }
 void 			SfmlWindow::drawStart()
 {
-	m_window->clear(sf::Color(255, 0, 0, 255));
+	m_window->clear(sf::Color(32,178,170, 255));
+	sf::Font font;
+	font.loadFromFile("./fonts/arial.ttf");
+
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(40);
+	text.setStyle(sf::Text::Bold);
+	text.setColor(sf::Color::Black);
+	text.setString(        "FOR START NEW GAME PRESS << N >>\n"
+						   "--------------------------------\n"
+						   "FOR EXIT PRESS << ESC >>\n");
+
+	sf::FloatRect textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width/2.0f,
+				   textRect.top  + textRect.height/2.0f);
+	text.setPosition(sf::Vector2f(m_width/2.0f,m_height/2.0f));
+
+	m_window->draw(text);
 	m_window->display();
-		printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
 }
+
 void 			SfmlWindow::drawGameOver(std::string const & finishMessage)
 {
 	m_window->clear(sf::Color(0, 0, 250, 255));
+	sf::Font font;
+	font.loadFromFile("./fonts/arial.ttf");
+
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(40);
+	text.setStyle(sf::Text::Bold);
+	text.setColor(sf::Color::White);
+	text.setString(finishMessage.c_str());
+
+	sf::FloatRect textRect = text.getLocalBounds();
+	text.setOrigin(textRect.left + textRect.width/2.0f,
+				   textRect.top  + textRect.height/2.0f);
+	text.setPosition(sf::Vector2f(m_width/2.0f,m_height/2.0f));
+
+	m_window->draw(text);
 	m_window->display();
-	if (finishMessage == "")
-		return ;
 }
 
 

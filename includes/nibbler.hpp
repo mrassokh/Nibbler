@@ -63,7 +63,7 @@ private:
 	void 										handleExitEvent();
 	void 										handleChangeToSdlEvent();
 	void 										handleChangeToSfmlEvent();
-	void 										handleChangeToGlutEvent();
+	void 										handleChangeToNcursesEvent();
 	void 										handleNewGameEvent();
 	void 										handleDefaultEvent();
 
@@ -107,6 +107,7 @@ private:
 	const char* 								m_sharedWindowLib;
 	enum STATE									m_windowState;
 	std::string 								m_finishMessage;
+	int 										m_changeLib;
 };
 
 #endif

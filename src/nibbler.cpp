@@ -15,7 +15,7 @@
 #include "../includes/nibbler.hpp"
 
 Nibbler::Nibbler() : m_loopCondition(1),
-						m_velocity(10),
+						m_velocity(1),
 						m_time(0),
 						m_deltaTime(0),
 						m_multMode(0)
@@ -31,12 +31,13 @@ Nibbler::~Nibbler()
 Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 													m_startCondition(1),
 													m_gameOverCondition(1),
-													m_velocity(10),
+													m_velocity(1),
 													m_time(0),
 													m_deltaTime(0),
 													m_multMode(mult),
 													m_windowState(START),
-													m_finishMessage("")
+													m_finishMessage(""),
+													m_changeLib(0)
 
 
 {
@@ -55,7 +56,7 @@ Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 	m_eventFunctions[4] = &Nibbler::handleExitEvent;
 	m_eventFunctions[5] = &Nibbler::handleChangeToSdlEvent;
 	m_eventFunctions[6] = &Nibbler::handleChangeToSfmlEvent;
-	m_eventFunctions[7] = &Nibbler::handleChangeToGlutEvent;
+	m_eventFunctions[7] = &Nibbler::handleChangeToNcursesEvent;
 	m_eventFunctions[8] = &Nibbler::handleNewGameEvent;
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
 
@@ -90,7 +91,8 @@ void 			Nibbler::initGame(void)
 
 void 								Nibbler::clearGame()
 {
-	m_velocity = 10;
+	printf("%s\n","ClearGame" );
+	m_velocity = 1;
 	m_time = 0;
 	m_deltaTime = 0;
 	m_loopCondition = 0;
@@ -99,27 +101,32 @@ void 								Nibbler::clearGame()
 	m_obstacleList->clear();
 	m_snake.getSnake()->clear();
 	m_snake.setScore(0);
-	if (m_multMode)
+	if (m_multMode) {
 		m_secondSnake.getSnake()->clear();
 		m_secondSnake.setScore(0);
+	}
 }
 
 void  			Nibbler::processing()
 {
 	while (strcmp(m_sharedWindowLib, "exit") != 0){
+		m_changeLib = 0;
 		dl_handle = dlopen(m_sharedWindowLib, RTLD_LAZY | RTLD_LOCAL);
-		if (!dl_handle)
+		if (!dl_handle) {
 			dlerror_wrapper();
-		printf("m_sharedWindowLib %s!!!\n", m_sharedWindowLib);
+		}
 		m_windowCreator = reinterpret_cast<IWindow *(*)(int width, int height)>(dlsym(dl_handle, "createWindow"));
-		if (!m_windowCreator)
+		if (!m_windowCreator) {
 			dlerror_wrapper();
+		}
 	    m_newWindow = m_windowCreator(m_gameField->getWidth(), m_gameField->getHeight());
 		m_newWindow->init();
-		(this->*m_windowStateFunctions[m_windowState])();
+		while (!m_changeLib)
+			(this->*m_windowStateFunctions[m_windowState])();
 		m_windowDestructor = reinterpret_cast<void (*)(IWindow*)>(dlsym(dl_handle, "deleteWindow"));
-		if (!m_windowDestructor)
+		if (!m_windowDestructor){
 			dlerror_wrapper();
+		}
 		m_windowDestructor(m_newWindow);
 		dlclose(dl_handle);
 	}
@@ -128,10 +135,9 @@ void  			Nibbler::processing()
 void 	Nibbler::startScreen()
 {
 	m_startCondition = 1;
-	initGame();
 	while (m_startCondition){
-		eventHandling();
 		m_newWindow->drawStart();
+		eventHandling();
 	}
 }
 
@@ -139,8 +145,8 @@ void 	Nibbler::gameOverScreen()
 {
 	m_gameOverCondition = 1;
 	while (m_gameOverCondition){
-		eventHandling();
 		m_newWindow->drawGameOver(m_finishMessage);
+		eventHandling();
 	}
 }
 
@@ -157,8 +163,8 @@ void 			Nibbler::gameLoop()
 		eventHandling();
 		m_deltaTime = static_cast<double>((clock() - start ))/ CLOCKS_PER_SEC;
 		m_time += m_deltaTime;
-		if (velocity_incr > 1 && m_velocity < 50) {
-			m_velocity += 5;
+		if (velocity_incr > 5 && m_velocity < 50) {
+			m_velocity += 1;
 			velocity_incr = 0;
 		}
 		velocity_incr += m_deltaTime;
@@ -169,17 +175,18 @@ int 			Nibbler::update()
 {
 	try {
 		m_snakeProcessor->updateSnake(m_snake, m_velocity, m_deltaTime);
-		if (m_multMode)
+		if (m_multMode) {
 			m_snakeProcessor->updateSnake(m_secondSnake, m_velocity, m_deltaTime);
+		}
 		m_snakeProcessor->checkFinish(m_snake, m_secondSnake);
-		m_foodProcessor->timeUpdateFoodList(m_foodList,m_gameField);
+		m_foodProcessor->timeUpdateFoodList(m_foodList, m_gameField);
 	}
 	catch (std::exception& e)	{
-		std::string m_finishMessage = static_cast<std::string>(e.what()) + "\nGAME OVER!!!";
+		m_finishMessage = static_cast<std::string>(e.what());
+		m_finishMessage.insert(0, "GAME OVER!!!\n");
 		m_loopCondition = 0;
 		clearGame();
 		m_windowState = GAME_OVER;
-		m_newWindow->quit(m_finishMessage);
 		return (0);
 	}
 	return (1);
@@ -188,7 +195,11 @@ int 			Nibbler::update()
 void 			Nibbler::draw()
 {
 	m_newWindow->startCycl();
+	m_render->drawFood(m_foodList, m_newWindow);
+	m_render->drawObstacles(m_obstacleList, m_newWindow);
 	m_render->drawSnake(m_snake, m_newWindow);
+	m_render->drawFood(m_foodList, m_newWindow);
+	m_render->drawObstacles(m_obstacleList, m_newWindow);
 	if (m_multMode){
 		m_render->drawSnake(m_secondSnake, m_newWindow);
 		m_newWindow->drawScore(m_snake.getScore(), m_velocity, SNAKE_HEAD, 1);
@@ -196,8 +207,6 @@ void 			Nibbler::draw()
 	} else {
 		m_newWindow->drawScore(m_snake.getScore(), m_velocity, SNAKE_HEAD, 0);
 	}
-	m_render->drawFood(m_foodList, m_newWindow);
-	m_render->drawObstacles(m_obstacleList, m_newWindow);
 	m_newWindow->endCycl();
 }
 
@@ -214,7 +223,9 @@ void 			Nibbler::handleLeftFirstEvent()
 {
 	if (m_windowState != GAME)
 		return ;
+
 	auto headSquare = std::dynamic_pointer_cast<SnakeHead>(*(m_snake.getSnake()->begin()));
+   	printf("headSquare->getLeftRotationCondition()  = %d\n",headSquare->getLeftRotationCondition());
 	if (headSquare->getLeftRotationCondition() < 0)
 		return ;
 	rotateToLeft(headSquare);
@@ -255,11 +266,12 @@ void 			Nibbler::handleRightSecondEvent()
 
 void 			Nibbler::handleExitEvent()
 {
-	m_newWindow->quit("") ;
+	m_newWindow->quit("");
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_sharedWindowLib = "exit";
+	m_changeLib = 1;
 }
 
 void 			Nibbler::handleChangeToSdlEvent()
@@ -268,8 +280,9 @@ void 			Nibbler::handleChangeToSdlEvent()
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToSdlEvent!!!\n\n\n");
+	printf("handleChangeToSdlEvent!!!\n");
 	m_sharedWindowLib = "lib1_sdl.so";
+	m_changeLib = 1;
 }
 void 				Nibbler::handleChangeToSfmlEvent()
 {
@@ -277,18 +290,20 @@ void 				Nibbler::handleChangeToSfmlEvent()
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToSfmlEvent!!!\n\n\n");
+	printf("handleChangeToSfmlEvent!!!\n");
 	m_sharedWindowLib = "lib2_sfml.so";
+	m_changeLib = 1;
 }
 
-void 		Nibbler::handleChangeToGlutEvent()
+void 		Nibbler::handleChangeToNcursesEvent()
 {
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToGlutEvent!!!\n\n\n");
-	m_sharedWindowLib = "glutlib.so";
+	printf("handleChangeToNcursesEvent!!!\n\n\n");
+	m_sharedWindowLib = "lib3_ncurses.so";
+	m_changeLib = 1;
 }
 
 
@@ -297,7 +312,6 @@ void 		Nibbler::handleNewGameEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	m_newWindow->quit("");
 	clearGame();
 	initGame();
 	m_windowState = GAME;

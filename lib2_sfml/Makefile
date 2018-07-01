@@ -1,7 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: rmalkevy <rmalkevy@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2017/06/30 17:31:31 by rmalkevy          #+#    #+#              #
+#    Updated: 2017/06/30 18:38:10 by rmalkevy         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 SFMLDIR=SFML2.2
 
-include_dir=/usr/X11R6/include $(SFMLDIR)/SFML-2.2-osx-clang-universal/include
-library_dir=/usr/X11R6/lib
+#include_dir=/usr/X11R6/include $(SFMLDIR)/SFML-2.2-osx-clang-universal/include
+include_dir=$(SFMLDIR)/SFML-2.2-osx-clang-universal/include
+#library_dir=/usr/X11R6/lib
 cairo=cairo
 x11=X11
 sfml=SFML sfml-graphics sfml-window sfml-system OpenGL
@@ -14,13 +27,15 @@ CXX=clang++
 FRAMSFML=-F $(SFMLFRAMDIR) $(addprefix -framework , $(sfml))
 LIBRARY= $(LIBCAIRO) $(LIBX11)
 INCLUDE=$(addprefix -I, $(include_dir))
-LIB=$(addprefix -L, $(library_dir)) $(LIBRARY)
+#LIB=$(addprefix -L, $(library_dir)) $(LIBRARY)
+LIB=# $(LIBRARY)
 
 NAME=lib2_sfml.so
 NAMEGOAL = ../
-CPPFLAGS = -g3 -Wall -Wextra -Werror -std=c++11 $(INCLUDE)
-VPATH=$(include_dir) $(library_dir) $(src_dir)
-vpath %.dylib $(library_dir)
+CPPFLAGS = -g3 -Wall -Wextra -Werror -std=c++11  $(INCLUDE)
+#VPATH=$(include_dir) $(library_dir) $(src_dir)
+VPATH=$(include_dir) $(src_dir)
+vpath %.dylib #$(library_dir)
 
 SRC=sfmlWindow.cpp
 
@@ -40,13 +55,19 @@ $(SFMLDIR):
 	cd $(SFMLFRAMDIR) && ln -s ../extlibs/freetype.framework
 
 $(NAME): $(OBJ)
-	$(CXX) $(CPPFLAGS) -o $@ $(OBJ) $(LIB) $(FRAMSFML) -rpath $(PWD)/$(SFMLFRAMDIR) -dynamiclib
-	rm -f $(OBJ)
-	mv $(NAME) $(NAMEGOAL)
+	@ $(CXX) $(CPPFLAGS) -o $@ $(OBJ) $(LIB) $(FRAMSFML) -rpath $(PWD)/$(SFMLFRAMDIR) -dynamiclib
+	@ rm -f $(OBJ)
+	@ mv $(NAME) $(NAMEGOAL)
 
-
+extract:
+	git clone https://github.com/SFML/SFML.git
+	# @curl -o sfml.tar http://www.noxs.net/42project/resources/sfml.tar.bz2
+	# tar jxf sfml.tar
+	# rm sfml.tar.bz2
 clean:
-	rm -rf $(OBJ)
+	@ rm -rf $(OBJ)
+	@ rm -rf $(SFMLDIR)
+	@ echo "$(YELLOW)[cleanSFML2]$(RESET)"
 
 fclean: clean
 	rm -rf $(NAME)  ./**/#*# ./**/.DS_Store ./**/.#*

@@ -14,6 +14,7 @@
 # define SDL_WINDOW_HPP
 # include "IWindow.hpp"
 # include "../lib1_sdl/SDL2.framework/Headers/SDL.h"
+# include "../lib1_sdl/SDL2_ttf.framework/Headers/SDL_ttf.h"
 # define SQUARE_SIZE 40
 class SdlWindow : public IWindow
 {
@@ -33,12 +34,15 @@ public:
 	EVENTS 							handleKeyDown(int key) const;
 private:
 	SdlWindow();
-
+	void					showText(int x, int y, const char *text);
 	int 					m_width;
 	int 					m_height;
 	SDL_Event 				m_event;
 	SDL_Window 				*m_window;
 	SDL_Renderer 			*m_renderer;
+	SDL_Surface				*m_textSurface;
+	SDL_Texture				*m_textTexture;
+	TTF_Font				*m_font;
 	bool 					m_quit;
 
 
