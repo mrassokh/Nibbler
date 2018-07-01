@@ -55,7 +55,7 @@ Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 	m_eventFunctions[4] = &Nibbler::handleExitEvent;
 	m_eventFunctions[5] = &Nibbler::handleChangeToSdlEvent;
 	m_eventFunctions[6] = &Nibbler::handleChangeToSfmlEvent;
-	m_eventFunctions[7] = &Nibbler::handleChangeToGlutEvent;
+	m_eventFunctions[7] = &Nibbler::handleChangeToNcursesEvent;
 	m_eventFunctions[8] = &Nibbler::handleNewGameEvent;
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
 
@@ -171,32 +171,20 @@ void 			Nibbler::gameLoop()
 int 			Nibbler::update()
 {
 	try {
-		std::cout << "update 1" << std::endl;
 		m_snakeProcessor->updateSnake(m_snake, m_velocity, m_deltaTime);
-		std::cout << "update 2" << std::endl;
 		if (m_multMode) {
-			std::cout << "update 3" << std::endl;
 			m_snakeProcessor->updateSnake(m_secondSnake, m_velocity, m_deltaTime);
-			std::cout << "update 4" << std::endl;
 		}
 		m_snakeProcessor->checkFinish(m_snake, m_secondSnake);
-		std::cout << "update 5" << std::endl;
 		m_foodProcessor->timeUpdateFoodList(m_foodList, m_gameField);
-		std::cout << "update 6" << std::endl;
 	}
 	catch (std::exception& e)	{
-		std::cout << "update 7" << std::endl;
 		m_finishMessage = static_cast<std::string>(e.what());
 		m_finishMessage.insert(0, "GAME OVER!!!\n");
-		std::cout << "update 8" << std::endl;
 		m_loopCondition = 0;
-		std::cout << "update 9" << std::endl;
 		clearGame();
-		std::cout << "update 10" << std::endl;
 		m_windowState = GAME_OVER;
-		std::cout << "update 11" << std::endl;
 		m_newWindow->quit(m_finishMessage);
-		std::cout << "update 11" << std::endl;
 		return (0);
 	}
 	return (1);
@@ -298,14 +286,14 @@ void 				Nibbler::handleChangeToSfmlEvent()
 	m_sharedWindowLib = "lib2_sfml.so";
 }
 
-void 		Nibbler::handleChangeToGlutEvent()
+void 		Nibbler::handleChangeToNcursesEvent()
 {
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToGlutEvent!!!\n\n\n");
-	m_sharedWindowLib = "glutlib.so";
+	printf("handleChangeToNcursesEvent!!!\n\n\n");
+	m_sharedWindowLib = "lib3_ncurses.so";
 }
 
 
