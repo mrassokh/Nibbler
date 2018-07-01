@@ -121,12 +121,12 @@ make_lib2_sfml_so:
 clean:
 	@ rm -f $(OBJ)
 	@ rm -rf $(OBJ_DIR)
-	@ echo "$(YELLOW)[clean]$(RESET)"
+	@ echo "$(YELLOW)[cleanRootDirectory]$(RESET)"
 
 fclean: clean
 	@ rm -f $(NAME) $(SDLLIB) $(SFMLLIB)
 	@ cd ./$(LIB_SDL_PATH); make clean;
-	@ cd ./$(LIB_SFML_PATH); make clean;
+	@ cd ./$(LIBS_SFML_PATH); make clean;
 	@ echo "$(RED)[fclean]$(RESET)"
 
 re: fclean all

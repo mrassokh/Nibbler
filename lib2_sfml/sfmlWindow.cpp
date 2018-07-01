@@ -25,8 +25,8 @@ SfmlWindow::SfmlWindow(int width, int height)
 
 SfmlWindow::~SfmlWindow()
 {
-	delete m_event;
-	delete m_window;
+	 delete m_event;
+	 delete m_window;
 }
 
 void 					SfmlWindow::init(void)
@@ -35,9 +35,9 @@ void 					SfmlWindow::init(void)
 
 	sf::Vector2i pos(0, 0);
 	try {
-		sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+		//sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 		m_window = new sf::RenderWindow(
-				sf::VideoMode(m_width, m_height, desktop.bitsPerPixel),
+				sf::VideoMode(m_width, m_height),
 				"Genius");
 		m_window->setPosition(pos);
 		m_window->setFramerateLimit(60);
@@ -59,17 +59,18 @@ void 					SfmlWindow::endCycl()
 
 void 					SfmlWindow::quit(std::string const & finishMessage)
 {
-	printf("%s\n", finishMessage.c_str());
 	m_window->close();
+	if (finishMessage == "")
+		return;
 }
 
 EVENTS 			SfmlWindow::getEvent(void)
 {
 	while (m_window->pollEvent(*m_event)){
-		if (m_event->type == sf::Event::Closed)
+		if (m_event->type == sf::Event::Closed){
 			return EXIT;
-		else if (m_event->type == sf::Event::KeyPressed)
-		{
+		}
+		else if (m_event->type == sf::Event::KeyPressed){
 			return handleKeyDown();
 		}
 	}

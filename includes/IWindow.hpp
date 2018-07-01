@@ -19,8 +19,7 @@ enum STATE
 {
 	START,
 	GAME,
-	GAME_OVER,
-	SCREEN_EXIT
+	GAME_OVER
 };
 
 enum EVENTS

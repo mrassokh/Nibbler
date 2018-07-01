@@ -107,6 +107,7 @@ private:
 	const char* 								m_sharedWindowLib;
 	enum STATE									m_windowState;
 	std::string 								m_finishMessage;
+	int 										m_changeLib;
 };
 
 #endif

@@ -66,7 +66,7 @@ void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
 
 void 					SdlWindow::quit(std::string const & finishMessage)
 {
-	SDL_Delay(1000);
+	//SDL_Delay(1000);
 	printf("%s\n", finishMessage.c_str());
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
@@ -78,12 +78,9 @@ EVENTS 			SdlWindow::getEvent(void)
 	while (SDL_PollEvent(&m_event)){
 	if (m_event.type == SDL_QUIT ||  m_event.key.keysym.sym == SDLK_ESCAPE)
 		return EXIT;
-	else if (m_event.type == SDL_KEYDOWN)
-	{
-		//printf("SDL_KEYDOWN %d\n", ret);
-
-		return handleKeyDown(m_event.key.keysym.sym);
-	}
+		else if (m_event.type == SDL_KEYDOWN) {
+			return handleKeyDown(m_event.key.keysym.sym);
+		}
 	}
 	return DEFAULT;
 }
@@ -143,9 +140,6 @@ void 				SdlWindow::drawStart()
 void 				SdlWindow::drawGameOver(std::string const & finishMessage)
 {
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 250, 255);
-
-	//printf("%s\n", finishMessage.c_str());
-	//printf("FOR START NEW GAME PRESS N\n FOR EXIT PRESS ECS\n");
 	SDL_RenderClear(m_renderer);
 	SDL_RenderPresent(m_renderer);
 	if (finishMessage == "")
