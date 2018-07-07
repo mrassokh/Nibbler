@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ncursesWindow.hpp                                  :+:      :+:    :+:   */
+/*   mlxWindow.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmalkevy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,38 +14,37 @@
 #define NIBLER_NCURSESWINDOW_HPP
 
 # include "IWindow.hpp"
-# define SQUARE_SIZE 20
-# include <ncurses.h>
+# define SQUARE_SIZE 40
 
-class ncursesWindow : public IWindow
+# include "../lib3_glfw/glfw-3.2.1/include/GLFW/glfw3.h"
+
+class glfwWindow : public IWindow
 {
 public:
-	ncursesWindow(int width, int height);
-	virtual ~ncursesWindow();
+	glfwWindow(int width, int height);
+	virtual ~glfwWindow();
 
-	virtual EVENTS			getEvent(void);
+	virtual EVENTS			getEvent();
 	virtual void 			drawSquare(int x, int y, eType type);
 	virtual void 			drawScore(int score, int velocity, eType type, int mult);
 	virtual void 			drawStart();
 	virtual void 			drawGameOver(std::string const & finishMessage);
-	virtual void 			startCycl(void);
-	virtual void 			endCycl(void);
-	virtual void 			init(void);
+	virtual void 			startCycl();
+	virtual void 			endCycl();
+	virtual void 			init();
 	virtual void 			quit(std::string const & finishMessage);
 
 	EVENTS 					handleKeyDown() const;
 private:
-	ncursesWindow();
-
-	int 					m_width;
-	int 					m_height;
-	WINDOW					*m_window;
-	int 					m_event;
+	glfwWindow();
+	GLFWwindow				*m_window;
+	const GLuint 			m_width;
+	const GLuint			m_height;
 };
 
 extern "C" {
-	ncursesWindow		*createWindow(int width, int height);
-	void 			deleteWindow(ncursesWindow *ncursesWindow);
+	glfwWindow		*createWindow(int width, int height);
+	void 			deleteWindow(glfwWindow *glfwWindow);
 }
 
 #endif //NIBLER_NCURSESWINDOW_HPP

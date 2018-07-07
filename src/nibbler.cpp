@@ -56,7 +56,7 @@ Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 	m_eventFunctions[4] = &Nibbler::handleExitEvent;
 	m_eventFunctions[5] = &Nibbler::handleChangeToSdlEvent;
 	m_eventFunctions[6] = &Nibbler::handleChangeToSfmlEvent;
-	m_eventFunctions[7] = &Nibbler::handleChangeToNcursesEvent;
+	m_eventFunctions[7] = &Nibbler::handleChangeToGLFWEvent;
 	m_eventFunctions[8] = &Nibbler::handleNewGameEvent;
 	m_eventFunctions[9] = &Nibbler::handleDefaultEvent;
 
@@ -295,14 +295,14 @@ void 				Nibbler::handleChangeToSfmlEvent()
 	m_changeLib = 1;
 }
 
-void 		Nibbler::handleChangeToNcursesEvent()
+void 		Nibbler::handleChangeToGLFWEvent()
 {
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
 	m_newWindow->quit("");
-	printf("handleChangeToNcursesEvent!!!\n\n\n");
-	m_sharedWindowLib = "lib3_ncurses.so";
+	printf("handleChangeToGLFWEvent!!!\n\n\n");
+	m_sharedWindowLib = "lib3_glfw.so";
 	m_changeLib = 1;
 }
 

@@ -139,7 +139,7 @@ EVENTS 			SdlWindow::handleKeyDown(int key) const
 	else if (key == SDLK_s)
 		return CHANGE_TO_SFML_WIN;
 	else if (key == SDLK_d)
-		return CHANGE_TO_NCURS_WIN;
+		return CHANGE_TO_GLFW_WIN;
 	else if (key == SDLK_n)
 		return NEW_GAME;
 	else

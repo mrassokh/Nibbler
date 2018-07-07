@@ -91,7 +91,7 @@ EVENTS 			SfmlWindow::handleKeyDown() const
 		case sf::Keyboard::S:
 			return CHANGE_TO_SFML_WIN;
 		case sf::Keyboard::D:
-			return CHANGE_TO_NCURS_WIN;
+			return CHANGE_TO_GLFW_WIN;
 		case sf::Keyboard::N:
 			return NEW_GAME;
 		case sf::Keyboard::Escape:
