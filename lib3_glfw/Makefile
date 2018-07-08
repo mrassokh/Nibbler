@@ -24,12 +24,12 @@ INC = -I$(HEADERS_PATH) -I$(GLFWINCLUDES)
 
 #[---------------------------------LIBRARIES----------------------------------]#
 
-FRAMEWORKS =  -L$(GLFW3)/src -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+FRAMEWORKS =  -L$(GLFW3)/src -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo -framework GLUT
 
 #[--------------------------------COMPILATION---------------------------------]#
 
 CCXX = clang++
-FLAGS    = -Wall -Wextra -Werror -std=c++11
+FLAGS    = -Wall -Wextra -Werror -std=c++11 -Wno-deprecated-declarations
 LIB_FLAG = -shared -fPIC
 
 
@@ -76,7 +76,7 @@ $(GLFW3):
 
 clean:
 	@ rm -f $(OBJ)
-	@ rm -rf GLFW3
+	@ rm -rf $(GLFW3)
 	@ echo "$(YELLOW)[cleanGLFW3]$(RESET)"
 
 fclean: clean

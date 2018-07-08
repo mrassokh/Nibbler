@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlxWindow.cpp                                  :+:      :+:    :+:   */
+/*   glfwWindow.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmalkevy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,7 +15,9 @@
 glfwWindow::glfwWindow() : m_width(0), m_height(0)
 {}
 
-glfwWindow::glfwWindow(int width, int height) : m_width(width * SQUARE_SIZE), m_height(height * SQUARE_SIZE)
+glfwWindow::glfwWindow(int width, int height) :
+		m_width((const GLuint)width * SQUARE_SIZE),
+		m_height((const GLuint)height * SQUARE_SIZE)
 {
 }
 
@@ -52,11 +54,12 @@ void 					glfwWindow::init()
 	}
 
 	// Set all the required options for GLFW
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+//	glfwWindowHint(GLFW_SAMPLES, 4);
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+//	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(m_width, m_height, "Nibler GLFW", nullptr, nullptr);
@@ -82,7 +85,7 @@ void 					glfwWindow::init()
 
 	// ----- OpenGL settings -----
 
-	glfwSwapInterval(1); 		// Lock to vertical sync of monitor (normally 60Hz, so 60fps)
+//	glfwSwapInterval(1); 		// Lock to vertical sync of monitor (normally 60Hz, so 60fps)
 
 	glEnable(GL_SMOOTH);		// Enable (gouraud) shading
 
@@ -137,9 +140,9 @@ void 					glfwWindow::quit(std::string const & finishMessage)
 EVENTS 			glfwWindow::getEvent()
 {
 	g_keycode = 0;
-	int pollEvent = 1;
-
-	while (pollEvent){
+//	int pollEvent = 1;
+//
+//	while (pollEvent){
 		glfwPollEvents();
 		//if (g_keycode > 0) std::cout << g_keycode << std::endl;
 		if (g_keycode == GLFW_KEY_ESCAPE)
@@ -147,8 +150,8 @@ EVENTS 			glfwWindow::getEvent()
 		else {
 			return handleKeyDown();
 		}
-	}
-	return DEFAULT;
+//	}
+//	return DEFAULT;
 }
 
 EVENTS 			glfwWindow::handleKeyDown() const
@@ -166,6 +169,16 @@ EVENTS 			glfwWindow::handleKeyDown() const
 	}
 }
 
+//void		glfwWindow::drawCell(int x, int y, int width, int height)
+//{
+//	glBegin(GL_QUADS);
+//	glVertex2f((GLfloat)x, (GLfloat)y);
+//	glVertex2f((GLfloat)x + width, (GLfloat)y);
+//	glVertex2f((GLfloat)x + width, (GLfloat)y + height);
+//	glVertex2f((GLfloat)x, (GLfloat)y + height);
+//	glEnd();
+//}
+
 void 			glfwWindow::drawSquare(int x, int y, eType type)
 {
 	if (type == FOOD){
@@ -179,29 +192,48 @@ void 			glfwWindow::drawSquare(int x, int y, eType type)
 	}  else  {
 		glColor3ub(255,222,173);
 	}
-	x = x * SQUARE_SIZE;
-	y = y * SQUARE_SIZE;
-	glRecti(x, y, x + SQUARE_SIZE, y + SQUARE_SIZE);
+//	drawCell(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+	x = x * SQUARE_SIZE * 2;
+	y = y * SQUARE_SIZE * 2;
+	glRecti(x, y, x + SQUARE_SIZE * 2, y + SQUARE_SIZE * 2);
 }
 
 
+void            draw_text(float x, float y, std::string str, void *font)
+{
+
+	int     len;
+	int     i;
+
+	glRasterPos2f(x, y);
+	len = str.length();
+	i = 0;
+	while (i < len)
+	{
+		glutBitmapCharacter(font, str[i]);
+		i++;
+	}
+}
+
 void 			glfwWindow::drawScore(int score, int velocity, eType type, int mult)
 {
-	score = 0;
-	velocity = 0;
-	type = SNAKE_HEAD;
-	mult = 0;
-//	std::string results("score is " +std::to_string(score)+ "\nvelocity is " +std::to_string(velocity)+ "\n");
-//	if (!mult){
-//		std::cout << results << std::endl;
-//	} else {
-//		if (type == SNAKE_HEAD) {
-//			results.insert(0, "FIRST PLAYER:\n");
-//		} else if (type == SNAKE_SECOND_HEAD){
-//			results.insert(0, "SECOND PLAYER:\n");
-//		}
-//		std::cout << results << std::endl;
-//	}
+	std::string scoreStr("Score " +std::to_string(score));
+	std::string velocityStr("Velocity " +std::to_string(velocity));
+
+	if (!mult){
+		draw_text(15, 20, scoreStr, TEXT_FONT);
+		draw_text(15, 50, velocityStr, TEXT_FONT);
+	} else {
+		if (type == SNAKE_HEAD) {
+			draw_text(15, 20, "FIRST PLAYER:", TEXT_FONT);
+			draw_text(15, 40, scoreStr, TEXT_FONT);
+			draw_text(15, 60, velocityStr, TEXT_FONT);
+		} else if (type == SNAKE_SECOND_HEAD){
+			draw_text(15, 100, "SECOND PLAYER:\n", TEXT_FONT);
+			draw_text(15, 120, scoreStr, TEXT_FONT);
+			draw_text(15, 140, velocityStr, TEXT_FONT);
+		}
+	}
 
 }
 
@@ -209,6 +241,7 @@ void 			glfwWindow::drawStart()
 {
 	reset_viewport(0.125f, 0.698f, 0.666f);
 
+	draw_text(m_width - 200, m_height, "To start game press <<N>>", TEXT_FONT);
 
 	glfwSwapBuffers(m_window);
 }
@@ -216,25 +249,10 @@ void 			glfwWindow::drawStart()
 void 			glfwWindow::drawGameOver(std::string const & finishMessage)
 {
 	reset_viewport(0.125f, 0.698f, 0.666f);
-//	m_window->clear(sf::Color(0, 0, 250, 255));
-//	sf::Font font;
-//	font.loadFromFile("./fonts/arial.ttf");
-//
-//	sf::Text text;
-//	text.setFont(font);
-//	text.setCharacterSize(40);
-//	text.setStyle(sf::Text::Bold);
-//	text.setColor(sf::Color::White);
-//	text.setString(finishMessage.c_str());
-//
-//	sf::FloatRect textRect = text.getLocalBounds();
-//	text.setOrigin(textRect.left + textRect.width/2.0f,
-//				   textRect.top  + textRect.height/2.0f);
-//	text.setPosition(sf::Vector2f(m_width/2.0f,m_height/2.0f));
-//
-//	m_window->draw(text);
-//	m_window->display();
-//	std::cout << finishMessage << std::endl;
+
+	draw_text(m_width - 200, m_height - 20, "GAME OVER !!!", TEXT_FONT);
+	draw_text(m_width - 200, m_height + 20, "To start new game press <<N>>", TEXT_FONT);
+
 	(void)finishMessage;
 	glfwSwapBuffers(m_window);
 }

@@ -17,6 +17,10 @@
 # define SQUARE_SIZE 40
 
 # include "../lib3_glfw/glfw-3.2.1/include/GLFW/glfw3.h"
+# include <GLUT/glut.h>
+
+//# define TEXT_FONT      GLUT_STROKE_ROMAN
+# define TEXT_FONT      GLUT_BITMAP_TIMES_ROMAN_24
 
 class glfwWindow : public IWindow
 {
@@ -37,6 +41,7 @@ public:
 	EVENTS 					handleKeyDown() const;
 private:
 	glfwWindow();
+//	void					drawCell(int x, int y, int width, int height);
 	GLFWwindow				*m_window;
 	const GLuint 			m_width;
 	const GLuint			m_height;
