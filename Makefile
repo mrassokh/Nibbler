@@ -13,7 +13,7 @@
 NAME =	nibbler
 SDLLIB = lib1_sdl.so
 SFMLLIB = lib2_sfml.so
-NCURSESLIB = lib3_ncurses.so
+GLFWLIB = lib3_glfw.so
 
 #[----------------------------------HEADERS-----------------------------------]#
 
@@ -24,7 +24,7 @@ INC =-I$(HEADERS_PATH)
 #[---------------------------------LIBRARIES----------------------------------]#
 LIB_SDL_PATH = lib1_sdl/
 LIB_SFML_PATH = lib2_sfml/
-LIB_NCURSES_PATH = lib3_ncurses/
+LIB_GLFW_PATH = lib3_glfw/
 
 
 LIBPATH = ./static_libs/
@@ -80,7 +80,7 @@ RED                     =       \033[31m
 .PHONY: make_libs
 .PHONY: make_lib1_sdl_so
 .PHONY: make_lib2_sfml_so
-.PHONY: make_lib3_ncurses_so
+.PHONY: make_lib3_glfw_so
 
 
 vpath %.cpp $(SRC_PATH)
@@ -103,7 +103,7 @@ $(OBJ): | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-make_libs: $(SDLLIB) $(SFMLLIB) $(NCURSESLIB)
+make_libs: $(SDLLIB) $(SFMLLIB) $(GLFWLIB)
 
 $(SDLLIB):
 	@ cd ./$(LIB_SDL_PATH);\
@@ -115,10 +115,10 @@ $(SFMLLIB):
 	make ;
 	@ echo "$(GREEN)[lib2_sfml_so compile]$(RESET)"
 
-$(NCURSESLIB):
-	@ cd ./$(LIB_NCURSES_PATH);\
+$(GLFWLIB):
+	@ cd ./$(LIB_GLFW_PATH);\
 	make ;
-	@ echo "$(GREEN)[lib3_ncurses_so compile]$(RESET)"
+	@ echo "$(GREEN)[lib3_glfw_so compile]$(RESET)"
 
 clean:
 	@ rm -f $(OBJ)
@@ -126,10 +126,10 @@ clean:
 	@ echo "$(YELLOW)[cleanRootDirectory]$(RESET)"
 
 fclean: clean
-	@ rm -f $(NAME) $(SDLLIB) $(SFMLLIB) $(NCURSESLIB)
+	@ rm -f $(NAME) $(SDLLIB) $(SFMLLIB) $(GLFWLIB)
 	@ cd ./$(LIB_SDL_PATH); make clean;
 	@ cd ./$(LIB_SFML_PATH); make clean;
-	@ cd ./$(LIB_NCURSES_PATH); make clean;
+	@ cd ./$(LIB_GLFW_PATH); make clean;
 	@ echo "$(RED)[fclean]$(RESET)"
 
 re: fclean all

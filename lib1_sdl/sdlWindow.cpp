@@ -113,7 +113,7 @@ void 					SdlWindow::quit(std::string const & finishMessage)
 EVENTS 			SdlWindow::getEvent(void)
 {
 	while (SDL_PollEvent(&m_event)){
-		if (m_event.type == SDL_QUIT ||  m_event.key.keysym.sym == SDLK_ESCAPE)
+		if (m_event.type == SDL_QUIT || m_event.key.keysym.sym == SDLK_ESCAPE)
 			return EXIT;
 		else if (m_event.type == SDL_KEYDOWN)
 		{
@@ -138,7 +138,7 @@ EVENTS 			SdlWindow::handleKeyDown(int key) const
 	else if (key == SDLK_s)
 		return CHANGE_TO_SFML_WIN;
 	else if (key == SDLK_d)
-		return CHANGE_TO_NCURS_WIN;
+		return CHANGE_TO_GLFW_WIN;
 	else if (key == SDLK_n)
 		return NEW_GAME;
 	else

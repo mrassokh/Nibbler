@@ -61,13 +61,13 @@ $(NAME): $(OBJ)
 
 extract:
 	git clone https://github.com/SFML/SFML.git
-	# @curl -o sfml.tar http://www.noxs.net/42project/resources/sfml.tar.bz2
-	# tar jxf sfml.tar
-	# rm sfml.tar.bz2
+
+
 clean:
 	@ rm -rf $(OBJ)
 	@ rm -rf $(SFMLDIR)
-	@ echo "$(YELLOW)[cleanSFML2]$(RESET)"
+	@ echo "$(YELLOW)[cleanSFML]$(RESET)"
+
 
 fclean: clean
 	rm -rf $(NAME)  ./**/#*# ./**/.DS_Store ./**/.#*
