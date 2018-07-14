@@ -242,9 +242,8 @@ void 			Nibbler::handleRightFirstEvent()
 
 void 			Nibbler::handleLeftSecondEvent()
 {
-	if (m_windowState != GAME)
+	if (m_windowState != GAME || m_multMode == 0)
 		return ;
-
 	auto headSquare = std::dynamic_pointer_cast<SnakeHead>(*(m_secondSnake.getSnake()->begin()));
 	if (headSquare->getLeftRotationCondition() < 0)
 		return ;
@@ -253,9 +252,8 @@ void 			Nibbler::handleLeftSecondEvent()
 
 void 			Nibbler::handleRightSecondEvent()
 {
-	if (m_windowState != GAME)
+	if (m_windowState != GAME || m_multMode == 0)
 		return ;
-
 	auto headSquare = std::dynamic_pointer_cast<SnakeHead>(*(m_secondSnake.getSnake()->begin()));
 	if (headSquare->getRightRotationCondition() < 0)
 		return ;
