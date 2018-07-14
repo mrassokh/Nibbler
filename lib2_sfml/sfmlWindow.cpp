@@ -55,12 +55,6 @@ void 					SfmlWindow::endCycl()
 	m_window->display();
 }
 
-void 					SfmlWindow::quit(std::string const & finishMessage)
-{
-	if (finishMessage == "")
-		return;
-}
-
 EVENTS 			SfmlWindow::getEvent()
 {
 	while (m_window->pollEvent(*m_event)){

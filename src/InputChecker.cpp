@@ -34,7 +34,7 @@ InputChecker*		InputChecker::getInstance()
 void 				InputChecker::checkAndStoreInput(int ac,char **av)
 {
 	if (ac != 3 && ac != 4) {
-		throw CustomExeption("Wrong number of input arguments!!!\n Usage: ./nibbler (int)width (int)height (int)mult(optional)");
+		throw CustomExeption("Wrong number of input arguments!!!\n Usage: ./nibbler (int)width (int)height (string)mult(optional)");
 	} else {
 		try {
 			m_width = std::stoi(av[1]);
@@ -49,7 +49,9 @@ void 				InputChecker::checkAndStoreInput(int ac,char **av)
 		}
 	}
 		if (m_width < 10 || m_height < 10)
-			throw CustomExeption("Minimal size for width and height is 10!!!\n");
+			throw CustomExeption("Minimal size for width and height is 10!!!");
+		if (m_width > 40 || m_height > 40)
+			throw CustomExeption("Maximal size for width and height is 40!!!");
 	if (ac == 4) {
 		if (!strcmp(av[3], "mult"))
 			m_multMode = 1;

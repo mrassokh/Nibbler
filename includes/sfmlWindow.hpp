@@ -24,8 +24,7 @@ public:
 	virtual void 			startCycl(void);
 	virtual void 			endCycl(void);
 	virtual void 			init(void);
-	virtual void 			quit(std::string const & finishMessage);
-
+	
 	EVENTS 					handleKeyDown() const;
 private:
 	SfmlWindow();

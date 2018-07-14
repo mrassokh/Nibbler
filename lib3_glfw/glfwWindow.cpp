@@ -22,7 +22,10 @@ glfwWindow::glfwWindow(int width, int height) :
 }
 
 glfwWindow::~glfwWindow()
-{}
+{
+	if (m_window)
+		glfwDestroyWindow(m_window);
+}
 
 
 int g_keycode = 0;
@@ -52,14 +55,6 @@ void 					glfwWindow::init()
 	if (!glfwInit()) {
 		return ;
 	}
-
-	// Set all the required options for GLFW
-//	glfwWindowHint(GLFW_SAMPLES, 4);
-//	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-//	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-//	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(m_width, m_height, "Nibler GLFW", nullptr, nullptr);
@@ -128,30 +123,15 @@ void 					glfwWindow::endCycl()
 	glfwSwapBuffers(m_window);
 }
 
-void 					glfwWindow::quit(std::string const & finishMessage)
-{
-	if (m_window)
-		glfwDestroyWindow(m_window);
-	if (glfwWindowShouldClose(m_window))
-		glfwTerminate();
-	(void)finishMessage;
-}
-
 EVENTS 			glfwWindow::getEvent()
 {
 	g_keycode = 0;
-//	int pollEvent = 1;
-//
-//	while (pollEvent){
-		glfwPollEvents();
-		//if (g_keycode > 0) std::cout << g_keycode << std::endl;
-		if (g_keycode == GLFW_KEY_ESCAPE)
-			return EXIT;
-		else {
-			return handleKeyDown();
-		}
-//	}
-//	return DEFAULT;
+	glfwPollEvents();
+	if (g_keycode == GLFW_KEY_ESCAPE)
+		return EXIT;
+	else {
+		return handleKeyDown();
+	}
 }
 
 EVENTS 			glfwWindow::handleKeyDown() const
@@ -169,16 +149,6 @@ EVENTS 			glfwWindow::handleKeyDown() const
 	}
 }
 
-//void		glfwWindow::drawCell(int x, int y, int width, int height)
-//{
-//	glBegin(GL_QUADS);
-//	glVertex2f((GLfloat)x, (GLfloat)y);
-//	glVertex2f((GLfloat)x + width, (GLfloat)y);
-//	glVertex2f((GLfloat)x + width, (GLfloat)y + height);
-//	glVertex2f((GLfloat)x, (GLfloat)y + height);
-//	glEnd();
-//}
-
 void 			glfwWindow::drawSquare(int x, int y, eType type)
 {
 	if (type == FOOD){
@@ -192,7 +162,6 @@ void 			glfwWindow::drawSquare(int x, int y, eType type)
 	}  else  {
 		glColor3ub(255,222,173);
 	}
-//	drawCell(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 	x = x * SQUARE_SIZE * 2;
 	y = y * SQUARE_SIZE * 2;
 	glRecti(x, y, x + SQUARE_SIZE * 2, y + SQUARE_SIZE * 2);

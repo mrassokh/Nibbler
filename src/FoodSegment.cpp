@@ -22,7 +22,7 @@ FoodSegment::FoodSegment(const int & x, const int & y)
 									: SquareSegment(x, y, FOOD),
 										m_bornTime(static_cast<double>(clock() / CLOCKS_PER_SEC))
 {
-	m_liveTime = 5 + (rand() % 10) * 1.50;
+	m_liveTime = 2 + (rand() % 10) * 0.50;
 }
 
 FoodSegment::FoodSegment(FoodSegment const & rhs) : SquareSegment(rhs)

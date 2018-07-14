@@ -47,7 +47,7 @@ public:
 	virtual void 			startCycl() = 0;
 	virtual void 			init(void) = 0;
 	virtual void 			endCycl(void) = 0;
-	virtual void 			quit(std::string const & finishMessage) = 0;
+//	virtual void 			quit(std::string const & finishMessage) = 0;
 };
 
 

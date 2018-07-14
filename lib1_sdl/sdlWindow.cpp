@@ -49,7 +49,6 @@ SdlWindow::SdlWindow(int width, int height)
 SdlWindow::~SdlWindow()
 {
 	TTF_CloseFont(m_font);
-
 	TTF_Quit();
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
@@ -58,7 +57,6 @@ SdlWindow::~SdlWindow()
 
 void 					SdlWindow::init()
 {
-	std::cout<< "Init" <<std::endl;
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
 	m_window = SDL_CreateWindow("SDL2 line drawing",
@@ -69,13 +67,11 @@ void 					SdlWindow::init()
 	getcwd(path, sizeof(path));
 	std::string fontPath = path;
 	fontPath += "/fonts/arial.ttf";
-	std::cout << fontPath << std::endl;
 	m_font = TTF_OpenFont(fontPath.c_str(), 24);
 	if (m_font == NULL) {
 		printf("error: font not found\n");
 		exit(EXIT_FAILURE);
 	}
-	std::cout << "End init" << std::endl;
 }
 
 void 					SdlWindow::startCycl()
@@ -105,10 +101,10 @@ void 					SdlWindow::drawScore(int score, int velocity, eType type, int mult)
 	}
 }
 
-void 					SdlWindow::quit(std::string const & finishMessage)
-{
-	printf("%s\n", finishMessage.c_str());
-}
+// void 					SdlWindow::quit(std::string const & finishMessage)
+// {
+// 	printf("%s\n", finishMessage.c_str());
+// }
 
 EVENTS 			SdlWindow::getEvent(void)
 {

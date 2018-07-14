@@ -36,12 +36,10 @@ public:
 	virtual void 			startCycl();
 	virtual void 			endCycl();
 	virtual void 			init();
-	virtual void 			quit(std::string const & finishMessage);
 
 	EVENTS 					handleKeyDown() const;
 private:
 	glfwWindow();
-//	void					drawCell(int x, int y, int width, int height);
 	GLFWwindow				*m_window;
 	const GLuint 			m_width;
 	const GLuint			m_height;
@@ -53,4 +51,3 @@ extern "C" {
 }
 
 #endif //NIBLER_NCURSESWINDOW_HPP
-

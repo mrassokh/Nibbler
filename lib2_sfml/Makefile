@@ -12,9 +12,7 @@
 
 SFMLDIR=SFML2.2
 
-#include_dir=/usr/X11R6/include $(SFMLDIR)/SFML-2.2-osx-clang-universal/include
 include_dir=$(SFMLDIR)/SFML-2.2-osx-clang-universal/include
-#library_dir=/usr/X11R6/lib
 cairo=cairo
 x11=X11
 sfml=SFML sfml-graphics sfml-window sfml-system OpenGL
@@ -27,13 +25,11 @@ CXX=clang++
 FRAMSFML=-F $(SFMLFRAMDIR) $(addprefix -framework , $(sfml))
 LIBRARY= $(LIBCAIRO) $(LIBX11)
 INCLUDE=$(addprefix -I, $(include_dir))
-#LIB=$(addprefix -L, $(library_dir)) $(LIBRARY)
 LIB=# $(LIBRARY)
 
 NAME=lib2_sfml.so
 NAMEGOAL = ../
 CPPFLAGS = -g3 -Wall -Wextra -Werror -std=c++11  $(INCLUDE)
-#VPATH=$(include_dir) $(library_dir) $(src_dir)
 VPATH=$(include_dir) $(src_dir)
 vpath %.dylib #$(library_dir)
 

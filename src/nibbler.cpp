@@ -15,7 +15,7 @@
 #include "../includes/nibbler.hpp"
 
 Nibbler::Nibbler() : m_loopCondition(1),
-						m_velocity(1),
+						m_velocity(10),
 						m_time(0),
 						m_deltaTime(0),
 						m_multMode(0)
@@ -31,7 +31,7 @@ Nibbler::~Nibbler()
 Nibbler::Nibbler(int width, int height, int mult) : m_loopCondition(1),
 													m_startCondition(1),
 													m_gameOverCondition(1),
-													m_velocity(1),
+													m_velocity(10),
 													m_time(0),
 													m_deltaTime(0),
 													m_multMode(mult),
@@ -91,8 +91,7 @@ void 			Nibbler::initGame(void)
 
 void 								Nibbler::clearGame()
 {
-	printf("%s\n","ClearGame" );
-	m_velocity = 1;
+	m_velocity = 10;
 	m_time = 0;
 	m_deltaTime = 0;
 	m_loopCondition = 0;
@@ -164,7 +163,7 @@ void 			Nibbler::gameLoop()
 		m_deltaTime = static_cast<double>((clock() - start ))/ CLOCKS_PER_SEC;
 		m_time += m_deltaTime;
 		if (velocity_incr > 5 && m_velocity < 50) {
-			m_velocity += 1;
+			m_velocity += 5;
 			velocity_incr = 0;
 		}
 		velocity_incr += m_deltaTime;
@@ -278,7 +277,6 @@ void 			Nibbler::handleChangeToSdlEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	//m_newWindow->quit("");
 	printf("handleChangeToSdlEvent!!!\n");
 	m_sharedWindowLib = "lib1_sdl.so";
 	m_changeLib = 1;
@@ -288,7 +286,6 @@ void 				Nibbler::handleChangeToSfmlEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	//m_newWindow->quit("");
 	printf("handleChangeToSfmlEvent!!!\n");
 	m_sharedWindowLib = "lib2_sfml.so";
 	m_changeLib = 1;
@@ -299,8 +296,7 @@ void 		Nibbler::handleChangeToGLFWEvent()
 	m_loopCondition = 0;
 	m_startCondition = 0;
 	m_gameOverCondition = 0;
-	m_newWindow->quit("");
-	printf("handleChangeToGLFWEvent!!!\n\n\n");
+	printf("handleChangeToGLFWEvent!!!\n");
 	m_sharedWindowLib = "lib3_glfw.so";
 	m_changeLib = 1;
 }
